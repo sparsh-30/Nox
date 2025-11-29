@@ -41,4 +41,11 @@ public class UploadService {
         return ResponseEntity.ok("File merged successfully.");
     }
 
+    public ResponseEntity<String> mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks){
+        Path targetFilePath = fileOperationsService.generateFilePathFromObjectId(objectId);
+        fileOperationsService.truncateFile(targetFilePath);
+        fileOperationsService.mergeChunksToFinalFile(targetFilePath,sessionId,totalChunks);
+        return ResponseEntity.ok("Successfully override the file.");
+    }
+
 }

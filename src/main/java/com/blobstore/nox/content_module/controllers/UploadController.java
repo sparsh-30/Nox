@@ -29,12 +29,21 @@ public class UploadController {
         return uploadService.uploadChunkToStorage(sessionId,chunkNumber,chunk);
     }
 
-    @GetMapping("/merge/{sessionId}/{totalChunks}")
+    @PutMapping("/merge")
     public ResponseEntity<?> mergeChunks(
-            @PathVariable String sessionId,
-            @PathVariable Integer totalChunks
+            @RequestParam String sessionId,
+            @RequestParam Integer totalChunks
     ){
         return uploadService.mergeAllChunksIntoFinalFile(sessionId,totalChunks);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateExisting(
+            @RequestParam String objectId,
+            @RequestParam String sessionId,
+            @RequestParam Integer totalChunks
+    ){
+        return uploadService.mergeAllChunksToAnExistingFile(objectId,sessionId,totalChunks);
     }
 
 
