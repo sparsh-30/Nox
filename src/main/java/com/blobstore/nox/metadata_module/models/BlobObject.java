@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Table(name = "blob_objects")
 public class BlobObject {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String objectId;
     private String objectName;
     private ObjectType objectType;
