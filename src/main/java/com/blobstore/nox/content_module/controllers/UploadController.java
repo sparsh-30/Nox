@@ -16,7 +16,7 @@ public class UploadController {
     private final UploadService uploadService;
 
     @GetMapping("/start")
-    public ResponseEntity<?> upload(){
+    public ResponseEntity<?> upload() {
         return uploadService.startUploadSession();
     }
 
@@ -26,15 +26,15 @@ public class UploadController {
             @RequestParam("chunkNumber") Integer chunkNumber,
             @RequestParam("chunk") MultipartFile chunk
     ) throws IOException {
-        return uploadService.uploadChunkToStorage(sessionId,chunkNumber,chunk);
+        return uploadService.uploadChunkToStorage(sessionId, chunkNumber, chunk);
     }
 
     @PutMapping("/merge")
     public ResponseEntity<?> mergeChunks(
             @RequestParam String sessionId,
             @RequestParam Integer totalChunks
-    ){
-        return uploadService.mergeAllChunksIntoFinalFile(sessionId,totalChunks);
+    ) {
+        return uploadService.mergeAllChunksIntoFinalFile(sessionId, totalChunks);
     }
 
     @PutMapping("/update")
@@ -42,8 +42,8 @@ public class UploadController {
             @RequestParam String objectId,
             @RequestParam String sessionId,
             @RequestParam Integer totalChunks
-    ){
-        return uploadService.mergeAllChunksToAnExistingFile(objectId,sessionId,totalChunks);
+    ) {
+        return uploadService.mergeAllChunksToAnExistingFile(objectId, sessionId, totalChunks);
     }
 
 

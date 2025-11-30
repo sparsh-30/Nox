@@ -16,7 +16,6 @@ import java.util.List;
 @Table(name = "containers")
 public class Container {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String containerId;
     private String containerName;
     @CreationTimestamp

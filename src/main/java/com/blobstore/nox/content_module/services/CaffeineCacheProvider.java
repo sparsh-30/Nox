@@ -21,8 +21,14 @@ public class CaffeineCacheProvider implements CacheProvider {
     }
 
     @Override
+    public Integer getValueStoredForSession(String sessionId) {
+        Integer currVal = getCache().get(sessionId, Integer.class);
+        return currVal != null ? currVal : -1;
+    }
+
+    @Override
     public void storeSessionId(String sessionId) {
-        getCache().put(sessionId,0);
+        getCache().put(sessionId, 0);
     }
 
     @Override
@@ -31,11 +37,11 @@ public class CaffeineCacheProvider implements CacheProvider {
         if (currVal == null) {
             currVal = 0;
         }
-        getCache().put(sessionId,currVal+1);
+        getCache().put(sessionId, currVal + 1);
     }
 
     @Override
-    public void deleteSessionId(String sessionId){
+    public void deleteSessionId(String sessionId) {
         getCache().evict(sessionId);
     }
 }
