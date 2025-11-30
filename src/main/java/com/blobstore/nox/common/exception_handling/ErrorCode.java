@@ -17,7 +17,9 @@ public enum ErrorCode {
 //
 //    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR);
 
-    CACHE_NOT_FOUND(HttpStatus.BAD_REQUEST);
+    CACHE_NOT_FOUND(HttpStatus.BAD_REQUEST),
+
+    INVALID_CONTAINER_ID(HttpStatus.BAD_REQUEST);
 
     private final HttpStatus status;
 

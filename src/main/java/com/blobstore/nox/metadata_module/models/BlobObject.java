@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Builder
 @Table(name = "blob_objects")
 public class BlobObject {
     @Id

@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@Builder
 @ToString
 @Table(name = "containers")
 public class Container {

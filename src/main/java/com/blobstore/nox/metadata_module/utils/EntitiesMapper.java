@@ -31,4 +31,15 @@ public class EntitiesMapper {
         );
     }
 
+    public Container createContainerEntity(
+            String containerName,
+            String containerUUID
+    ) {
+        return Container.builder()
+                .containerId(containerUUID)
+                .containerName(containerName)
+                .build();
+    }
+
+
 }
