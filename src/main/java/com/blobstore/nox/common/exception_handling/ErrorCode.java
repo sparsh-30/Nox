@@ -19,7 +19,9 @@ public enum ErrorCode {
 
     CACHE_NOT_FOUND(HttpStatus.BAD_REQUEST),
 
-    INVALID_CONTAINER_ID(HttpStatus.BAD_REQUEST);
+    INVALID_CONTAINER_ID(HttpStatus.BAD_REQUEST),
+
+    OBJECT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST);
 
     private final HttpStatus status;
 
