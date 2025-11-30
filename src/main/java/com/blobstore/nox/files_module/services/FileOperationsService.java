@@ -48,7 +48,7 @@ public class FileOperationsService {
     }
 
     public void appendChunkToTargetFile(String sessionId, Integer chunkNumber, Path targetFilePath) {
-        // Create the target file if it does not exists
+        // Create the target file if it does not exist
         if (Files.notExists(targetFilePath)) {
             try {
                 Files.createFile(targetFilePath);
@@ -70,6 +70,9 @@ public class FileOperationsService {
                 out.write(buffer, 0, bytesRead);
             }
             out.flush();
+
+            // Delete the chunk file
+            deleteFile(chunkPath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
