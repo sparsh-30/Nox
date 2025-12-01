@@ -24,7 +24,7 @@ public class BlobObjectController {
             @RequestParam Long size,
             @RequestParam String parentPath
     ) {
-        return blobObjectService.saveObject(containerId, objectName, objectType, size, parentPath);
+        return ResponseEntity.ok(blobObjectService.saveObject(containerId, objectName, objectType, size, parentPath));
     }
 
     @GetMapping("/direct-children")
@@ -32,7 +32,7 @@ public class BlobObjectController {
             @RequestParam String containerId,
             @RequestParam String parentPath
     ) {
-        return blobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath);
+        return ResponseEntity.ok(blobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath));
     }
 
     @GetMapping("/all-children")
@@ -40,7 +40,7 @@ public class BlobObjectController {
             @RequestParam String containerId,
             @RequestParam String objectId
     ){
-        return blobObjectService.getAllChildObjectsBelongingToObjectId(containerId,objectId);
+        return ResponseEntity.ok(blobObjectService.getAllChildObjectsBelongingToObjectId(containerId,objectId));
     }
 
 }

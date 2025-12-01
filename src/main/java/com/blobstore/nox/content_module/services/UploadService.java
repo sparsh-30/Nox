@@ -6,7 +6,6 @@ import com.blobstore.nox.common.exception_handling.ErrorCode;
 import com.blobstore.nox.content_module.utils.CacheProvider;
 import com.blobstore.nox.files_module.services.FileOperationsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,17 +20,17 @@ public class UploadService {
     private final CacheProvider cacheProvider;
     private final FileOperationsService fileOperationsService;
 
-    public ResponseEntity<String> startUploadSession() {
+    public String startUploadSession() {
         // Generate sessionId
         String uuidString = UUIDGenerator.generateUUIDString();
 
         // Store the sessionId in cache
         cacheProvider.storeSessionId(uuidString);
 
-        return ResponseEntity.ok(uuidString);
+        return uuidString;
     }
 
-    public ResponseEntity<String> uploadChunkToStorage(String sessionId, Integer chunkNumber, MultipartFile chunk) throws IOException {
+    public String uploadChunkToStorage(String sessionId, Integer chunkNumber, MultipartFile chunk) throws IOException {
         // Check if the sessionId is valid or not
         if (cacheProvider.getValueStoredForSession(sessionId)==(-1)){
             throw new CustomAppException("Session Invalid",ErrorCode.CACHE_NOT_FOUND);
@@ -43,10 +42,10 @@ public class UploadService {
         // Update the chunk number in cache
         cacheProvider.incrementNumberOfChunksForSession(sessionId);
 
-        return ResponseEntity.ok("Chunk uploaded successfully");
+        return "Chunk uploaded successfully!!";
     }
 
-    public ResponseEntity<String> mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks) {
+    public String mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks) {
         // Check if the sessionId is valid or not
         if (cacheProvider.getValueStoredForSession(sessionId)==(-1)){
             throw new CustomAppException("Session Invalid",ErrorCode.CACHE_NOT_FOUND);
@@ -64,10 +63,10 @@ public class UploadService {
         // Evict the sessionId from cache
         cacheProvider.deleteSessionId(sessionId);
 
-        return ResponseEntity.ok("File merged successfully.");
+        return "File merged successfully!!";
     }
 
-    public ResponseEntity<String> mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks){
+    public String mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks){
         // Check if the sessionId is valid or not
         if (cacheProvider.getValueStoredForSession(sessionId)==(-1)){
             throw new CustomAppException("Session Invalid",ErrorCode.CACHE_NOT_FOUND);
@@ -85,7 +84,7 @@ public class UploadService {
         // Evict the sessionId from cache
         cacheProvider.deleteSessionId(sessionId);
 
-        return ResponseEntity.ok("Successfully override the file.");
+        return "Successfully override the file";
     }
 
 }

@@ -16,7 +16,7 @@ public class ContainerController {
     public ResponseEntity<?> createContainer(
             @RequestParam String containerName
     ) {
-        return containerService.createContainerUsingContainerName(containerName);
+        return ResponseEntity.ok(containerService.createContainerUsingContainerName(containerName));
     }
 
     @PatchMapping("/update-name")
@@ -24,14 +24,14 @@ public class ContainerController {
             @RequestParam String containerId,
             @RequestParam String updatedName
     ) {
-        return containerService.updateNameOfContainer(containerId, updatedName);
+        return ResponseEntity.ok(containerService.updateNameOfContainer(containerId, updatedName));
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteContainer(
             @RequestParam String containerId
     ) {
-        return containerService.deleteContainer(containerId);
+        return ResponseEntity.ok(containerService.deleteContainer(containerId));
     }
 
 }

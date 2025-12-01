@@ -7,7 +7,6 @@ import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.repositories.ContainerRepository;
 import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,17 +18,17 @@ public class ContainerService {
     private final ContainerRepository containerRepository;
     private final EntitiesMapper mapper;
 
-    public ResponseEntity<String> createContainerUsingContainerName(String containerName) {
+    public String createContainerUsingContainerName(String containerName) {
         // Generate a container entity using passed fields
         Container tempContainer = mapper.createContainerEntity(containerName, UUIDGenerator.generateUUIDString());
 
         // Make a save request to database to create container entry
         Container savedContainer = containerRepository.save(tempContainer);
 
-        return ResponseEntity.ok(savedContainer.getContainerId());
+        return savedContainer.getContainerId();
     }
 
-    public ResponseEntity<String> updateNameOfContainer(String containerId, String updatedName) {
+    public String updateNameOfContainer(String containerId, String updatedName) {
         // Fetch the associated container with the provided containerId
         Optional<Container> associatedContainerWithId = containerRepository.findByContainerId(containerId);
 
@@ -45,10 +44,10 @@ public class ContainerService {
         // Make update request to database to save the new entity
         containerRepository.save(containerWithUpdatedName);
 
-        return ResponseEntity.ok("Name Updated!!");
+        return "Name Updated!!";
     }
 
-    public ResponseEntity<String> deleteContainer(String containerId) {
+    public String deleteContainer(String containerId) {
         // Fetch the associated container with the provided containerId
         Optional<Container> associatedContainerWithId = containerRepository.findByContainerId(containerId);
 
@@ -60,7 +59,7 @@ public class ContainerService {
         // Make a delete request to database to delete the container entity
         containerRepository.delete(associatedContainerWithId.get());
 
-        return ResponseEntity.ok("Container deleted!!");
+        return "Container deleted!!";
     }
 
 }

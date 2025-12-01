@@ -11,7 +11,6 @@ import com.blobstore.nox.metadata_module.repositories.BlobObjectRepository;
 import com.blobstore.nox.metadata_module.repositories.ContainerRepository;
 import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class BlobObjectService {
     private final ContainerRepository containerRepository;
     private final EntitiesMapper mapper;
 
-    public ResponseEntity<String> saveObject(String containerId, String objectName, ObjectType objectType, Long size, String parentPath) {
+    public String saveObject(String containerId, String objectName, ObjectType objectType, Long size, String parentPath) {
         // Fetch the associated container from database
         Optional<Container> associatedContainer = containerRepository.findByContainerId(containerId);
 
@@ -45,10 +44,10 @@ public class BlobObjectService {
         // Make a save request to database to add BlobObject entry
         BlobObject savedObject = blobObjectRepository.save(tempBlobObject);
 
-        return ResponseEntity.ok(savedObject.getObjectId());
+        return savedObject.getObjectId();
     }
 
-    public ResponseEntity<?> updateObjectName(String containerId, String objectId, String updatedName) {
+    public String updateObjectName(String containerId, String objectId, String updatedName) {
         // Fetch the associated container from database
         Optional<Container> associatedContainer = containerRepository.findByContainerId(containerId);
 
@@ -74,10 +73,10 @@ public class BlobObjectService {
         associatedBlobObject.get().setObjectName(updatedName);
         blobObjectRepository.save(associatedBlobObject.get());
 
-        return ResponseEntity.ok("Name updated");
+        return "Name updated!!";
     }
 
-    public ResponseEntity<?> getAllObjectsBelongingToParentPath(String containerId, String parentPath) {
+    public List<ReturnBlobObject> getAllObjectsBelongingToParentPath(String containerId, String parentPath) {
         // Fetch the associated container from database
         Optional<Container> associatedContainer = containerRepository.findByContainerId(containerId);
 
@@ -89,13 +88,11 @@ public class BlobObjectService {
         // Get the list of child objects from database
         List<BlobObject> childObjects = blobObjectRepository.findByParentContainerAndParentPath(associatedContainer.get(), parentPath);
 
-        // Convert list of child objects to returnable DTO object
-        List<ReturnBlobObject> dtoBlobObjectList = childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
-
-        return ResponseEntity.ok(dtoBlobObjectList);
+        // Convert list of child objects to returnable DTO object and return
+        return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
     }
 
-    public ResponseEntity<?> getAllChildObjectsBelongingToObjectId(String containerId, String parentPathKeyword) {
+    public List<String> getAllChildObjectsBelongingToObjectId(String containerId, String parentPathKeyword) {
         // Fetch the associated container from database
         Optional<Container> associatedContainer = containerRepository.findByContainerId(containerId);
 
@@ -104,13 +101,13 @@ public class BlobObjectService {
             throw new CustomAppException("ContainerId is not valid", ErrorCode.INVALID_CONTAINER_ID);
         }
 
+        // Find all the objects that have starting parent path as the provided value
         List<BlobObject> childBlobObjectsList = blobObjectRepository.findByParentPathStartingWith(parentPathKeyword);
 
-        List<String> childBlobObjectIds = childBlobObjectsList.stream().map(
+        // Generate list of objectIds from the object list and return
+        return childBlobObjectsList.stream().map(
                 BlobObject::getObjectId
         ).toList();
-
-        return ResponseEntity.ok(childBlobObjectIds);
     }
 
 
