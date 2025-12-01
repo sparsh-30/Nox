@@ -27,4 +27,20 @@ public class BlobObjectController {
         return blobObjectService.saveObject(containerId, objectName, objectType, size, parentPath);
     }
 
+    @GetMapping("/direct-children")
+    public ResponseEntity<?> get(
+            @RequestParam String containerId,
+            @RequestParam String parentPath
+    ) {
+        return blobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath);
+    }
+
+    @GetMapping("/all-children")
+    public ResponseEntity<?> get2(
+            @RequestParam String containerId,
+            @RequestParam String objectId
+    ){
+        return blobObjectService.getAllChildObjectsBelongingToObjectId(containerId,objectId);
+    }
+
 }
