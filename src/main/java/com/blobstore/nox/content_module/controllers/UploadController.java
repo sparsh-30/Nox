@@ -1,6 +1,6 @@
 package com.blobstore.nox.content_module.controllers;
 
-import com.blobstore.nox.content_module.services.UploadService;
+import com.blobstore.nox.content_module.services.MainUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +13,11 @@ import java.io.IOException;
 @RequestMapping("/api/v1/upload")
 public class UploadController {
 
-    private final UploadService uploadService;
+    private final MainUploadService mainUploadService;
 
     @GetMapping("/start")
     public ResponseEntity<?> upload() {
-        String uploadSessionId = uploadService.startUploadSession();
+        String uploadSessionId = mainUploadService.startUploadSession();
         return ResponseEntity.ok(uploadSessionId);
     }
 
@@ -27,7 +27,7 @@ public class UploadController {
             @RequestParam("chunkNumber") Integer chunkNumber,
             @RequestParam("chunk") MultipartFile chunk
     ) throws IOException {
-        return ResponseEntity.ok(uploadService.uploadChunkToStorage(sessionId, chunkNumber, chunk));
+        return ResponseEntity.ok(mainUploadService.uploadChunkToStorage(sessionId, chunkNumber, chunk));
     }
 
     @PutMapping("/merge")
@@ -35,7 +35,7 @@ public class UploadController {
             @RequestParam String sessionId,
             @RequestParam Integer totalChunks
     ) {
-        return ResponseEntity.ok(uploadService.mergeAllChunksIntoFinalFile(sessionId, totalChunks));
+        return ResponseEntity.ok(mainUploadService.mergeAllChunksIntoFinalFile(sessionId, totalChunks));
     }
 
     @PutMapping("/update")
@@ -44,7 +44,7 @@ public class UploadController {
             @RequestParam String sessionId,
             @RequestParam Integer totalChunks
     ) {
-        return ResponseEntity.ok(uploadService.mergeAllChunksToAnExistingFile(objectId, sessionId, totalChunks));
+        return ResponseEntity.ok(mainUploadService.mergeAllChunksToAnExistingFile(objectId, sessionId, totalChunks));
     }
 
 
