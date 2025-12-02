@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BlobObjectService {
+public class MainBlobObjectService {
 
     private final BlobObjectRepository blobObjectRepository;
     private final ContainerRepository containerRepository;

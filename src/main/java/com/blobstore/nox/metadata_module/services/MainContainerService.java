@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ContainerService {
+public class MainContainerService {
 
     private final ContainerRepository containerRepository;
     private final EntitiesMapper mapper;

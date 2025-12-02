@@ -1,7 +1,7 @@
-package com.blobstore.nox.metadata_module.controllers;
+package com.blobstore.nox.content_module.controllers;
 
 import com.blobstore.nox.metadata_module.models.ObjectType;
-import com.blobstore.nox.metadata_module.services.BlobObjectService;
+import com.blobstore.nox.metadata_module.services.MainBlobObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/object")
-public class BlobObjectController {
+public class BlobObjectManagementController {
 
-    private final BlobObjectService blobObjectService;
+    private final MainBlobObjectService mainBlobObjectService;
 
     @PostMapping("/create/folder")
     public ResponseEntity<?> createObject(
@@ -20,7 +20,7 @@ public class BlobObjectController {
             @RequestParam Long size,
             @RequestParam String parentPath
     ) {
-        return ResponseEntity.ok(blobObjectService.saveObject(containerId, objectName, ObjectType.FOLDER, size, parentPath));
+        return ResponseEntity.ok(mainBlobObjectService.saveObject(containerId, objectName, ObjectType.FOLDER, size, parentPath));
     }
 
     @GetMapping("/get/children")
@@ -28,7 +28,7 @@ public class BlobObjectController {
             @RequestParam String containerId,
             @RequestParam String parentPath
     ) {
-        return ResponseEntity.ok(blobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath));
+        return ResponseEntity.ok(mainBlobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath));
     }
 
 }
