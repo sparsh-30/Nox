@@ -28,7 +28,7 @@ public class BlobObjectManagementController {
             @RequestParam String containerId,
             @RequestParam String parentPath
     ) {
-        return ResponseEntity.ok(mainBlobObjectService.getAllObjectsBelongingToParentPath(containerId, parentPath));
+        return ResponseEntity.ok(mainBlobObjectService.getAllDirectObjects(containerId, parentPath));
     }
 
 }

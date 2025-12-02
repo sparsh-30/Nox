@@ -15,5 +15,5 @@ public interface BlobObjectRepository extends JpaRepository<BlobObject, String> 
 
     List<BlobObject> findByParentContainerAndParentPath(Container parentContainer, String parentPath);
 
-    List<BlobObject> findByParentPathStartingWith(String parentPathKeyword);
+    List<BlobObject> findByParentContainerAndParentPathStartingWith(Container parentContainer,String parentPathKeyword);
 }
