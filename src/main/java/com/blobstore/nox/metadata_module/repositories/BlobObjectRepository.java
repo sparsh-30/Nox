@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface BlobObjectRepository extends JpaRepository<BlobObject, String> {
     Optional<BlobObject> findByObjectId(String objectId);
 
-    Optional<BlobObject> findByParentContainerAndObjectNameAndParentPathAndObjectType(Container parentContainer, String objectName, String parentPath, ObjectType objectType);
+    Optional<BlobObject> findByParentContainerIdAndObjectNameAndParentPathAndObjectType(String parentContainerId, String objectName, String parentPath, ObjectType objectType);
 
-    List<BlobObject> findByParentContainerAndParentPath(Container parentContainer, String parentPath);
+    List<BlobObject> findByParentContainerIdAndParentPath(String parentContainerId, String parentPath);
 
-    List<BlobObject> findByParentContainerAndParentPathStartingWith(Container parentContainer,String parentPathKeyword);
+    List<BlobObject> findByParentContainerIdAndParentPathStartingWith(String parentContainerId,String parentPathKeyword);
 }

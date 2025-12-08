@@ -21,7 +21,4 @@ public class Container {
     private String containerName;
     @CreationTimestamp
     private LocalDateTime containerCreatedAt;
-
-    @OneToMany(mappedBy = "parentContainer")
-    private List<BlobObject> containerObjects;
 }

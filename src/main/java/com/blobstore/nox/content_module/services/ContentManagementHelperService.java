@@ -17,8 +17,8 @@ public class ContentManagementHelperService {
     private final FileOperationsService fileOperationsService;
     private final BlobObjectHelperService blobObjectHelperService;
 
-    public void emptyAllChildrenOfParentPath(Container container, String parentPath) {
-        List<ReturnBlobObject> allChildObjects = blobObjectHelperService.getAllChildrenOfParentPath(container, parentPath);
+    public void emptyAllChildrenOfParentPath(String parentContainerId, String parentPath) {
+        List<ReturnBlobObject> allChildObjects = blobObjectHelperService.getAllChildrenOfParentPath(parentContainerId, parentPath);
         for (ReturnBlobObject i : allChildObjects) {
             deleteAnObjectEntry(i);
         }

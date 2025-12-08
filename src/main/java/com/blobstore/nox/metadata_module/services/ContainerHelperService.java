@@ -23,6 +23,10 @@ public class ContainerHelperService {
         return container.orElse(null);
     }
 
+    public String getTargetContainerId(Container targetContainer){
+        return targetContainer.getContainerId();
+    }
+
     public Container validateContainerId(String containerId) {
         Container container = getContainerFromContainerId(containerId);
         if (container == null) {

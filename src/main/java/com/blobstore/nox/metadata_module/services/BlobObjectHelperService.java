@@ -5,7 +5,6 @@ import com.blobstore.nox.common.exception_handling.CustomAppException;
 import com.blobstore.nox.common.exception_handling.ErrorCode;
 import com.blobstore.nox.metadata_module.dtos.ReturnBlobObject;
 import com.blobstore.nox.metadata_module.models.BlobObject;
-import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.models.ObjectType;
 import com.blobstore.nox.metadata_module.repositories.BlobObjectRepository;
 import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
@@ -39,22 +38,22 @@ public class BlobObjectHelperService {
         return (targetBlobObject.getParentPath() + targetBlobObject.getObjectName() + "/");
     }
 
-    public List<ReturnBlobObject> getAllChildrenByObjectId(Container parentContainer, String objectId) {
+    public List<ReturnBlobObject> getAllChildrenByObjectId(String parentContainerId, String objectId) {
         BlobObject associatedBlobObject = validateObjectId(objectId);
         if (associatedBlobObject.getObjectType() == ObjectType.FILE) {
             return List.of();
         }
         String targetParentPath = generateParentPathFromObject(associatedBlobObject);
-        return getAllChildrenOfParentPath(parentContainer, targetParentPath);
+        return getAllChildrenOfParentPath(parentContainerId, targetParentPath);
     }
 
-    public List<ReturnBlobObject> getListOfDirectChildOfParentPath(Container parentContainer, String parentPath) {
-        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerAndParentPath(parentContainer, parentPath);
+    public List<ReturnBlobObject> getListOfDirectChildOfParentPath(String parentContainerId, String parentPath) {
+        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerIdAndParentPath(parentContainerId, parentPath);
         return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
     }
 
-    public List<ReturnBlobObject> getAllChildrenOfParentPath(Container parentContainer, String parentPathKeyword) {
-        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerAndParentPathStartingWith(parentContainer, parentPathKeyword);
+    public List<ReturnBlobObject> getAllChildrenOfParentPath(String parentContainerId, String parentPathKeyword) {
+        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerIdAndParentPathStartingWith(parentContainerId, parentPathKeyword);
         return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
     }
 
@@ -66,15 +65,15 @@ public class BlobObjectHelperService {
         return associatedBlobObject;
     }
 
-    public void validatePresenceOfSimilarObject(Container parentContainer, String objectName, String parentPath, ObjectType objectType) {
-        Optional<BlobObject> associatedObject = blobObjectRepository.findByParentContainerAndObjectNameAndParentPathAndObjectType(parentContainer, objectName, parentPath, objectType);
+    public void validatePresenceOfSimilarObject(String parentContainerId, String objectName, String parentPath, ObjectType objectType) {
+        Optional<BlobObject> associatedObject = blobObjectRepository.findByParentContainerIdAndObjectNameAndParentPathAndObjectType(parentContainerId, objectName, parentPath, objectType);
         if (associatedObject.isPresent()) {
             throw new CustomAppException("Object already exists", ErrorCode.OBJECT_ALREADY_EXISTS);
         }
     }
 
-    public BlobObject createNewBlobObject(String objectName, ObjectType objectType, Long size, String parentPath, Container parentContainer) {
-        BlobObject newBlobObject = mapper.createBlobObjectEntity(UUIDGenerator.generateUUIDString(), objectName, objectType, size, parentPath, parentContainer);
+    public BlobObject createNewBlobObject(String objectName, ObjectType objectType, Long size, String parentPath, String parentContainerId) {
+        BlobObject newBlobObject = mapper.createBlobObjectEntity(UUIDGenerator.generateUUIDString(), objectName, objectType, size, parentPath, parentContainerId);
         return blobObjectRepository.save(newBlobObject);
     }
 

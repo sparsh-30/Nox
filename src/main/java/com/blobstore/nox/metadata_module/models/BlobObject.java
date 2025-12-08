@@ -24,8 +24,6 @@ public class BlobObject {
     @CreationTimestamp
     private LocalDateTime objectCreatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "containerId")
-    private Container parentContainer;
+    private String parentContainerId;
 
 }

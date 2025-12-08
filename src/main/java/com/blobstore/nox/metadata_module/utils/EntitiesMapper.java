@@ -28,7 +28,7 @@ public class EntitiesMapper {
                 blobObject.getSize(),
                 blobObject.getParentPath(),
                 blobObject.getObjectCreatedAt(),
-                blobObject.getParentContainer().getContainerId()
+                blobObject.getParentContainerId()
         );
     }
 
@@ -50,7 +50,7 @@ public class EntitiesMapper {
             ObjectType objectType,
             Long size,
             String parentPath,
-            Container parentContainer
+            String parentContainerId
     ) {
         return BlobObject.builder()
                 .objectId(objectId)
@@ -58,7 +58,7 @@ public class EntitiesMapper {
                 .objectType(objectType)
                 .size(size)
                 .parentPath(parentPath)
-                .parentContainer(parentContainer)
+                .parentContainerId(parentContainerId)
                 .build();
     }
 

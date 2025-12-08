@@ -21,18 +21,20 @@ public class MainContentManagementService {
     private final EntitiesMapper mapper;
 
     public String emptyAllChildrenOfParentPath(String containerId, String parentPath) {
-        Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        contentManagementHelperService.emptyAllChildrenOfParentPath(associatedContainer, parentPath);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
+        contentManagementHelperService.emptyAllChildrenOfParentPath(targetContainerId, parentPath);
         return "Parent path is emptied!!";
     }
 
     public String deleteAnObject(String containerId, String objectId) {
-        Container associatedContainer = containerHelperService.validateContainerId(containerId);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
         BlobObject associatedBlobObject = blobObjectHelperService.validateObjectId(objectId);
-        List<ReturnBlobObject> temp = blobObjectHelperService.getAllChildrenByObjectId(associatedContainer, objectId);
+        List<ReturnBlobObject> temp = blobObjectHelperService.getAllChildrenByObjectId(targetContainerId, objectId);
         if(!temp.isEmpty()){
             String targetParentPath = blobObjectHelperService.generateParentPathFromObject(associatedBlobObject);
-            contentManagementHelperService.emptyAllChildrenOfParentPath(associatedContainer,targetParentPath);
+            contentManagementHelperService.emptyAllChildrenOfParentPath(targetContainerId,targetParentPath);
         }
         contentManagementHelperService.deleteAnObjectEntry(mapper.mapBlobObjectToDTO(associatedBlobObject));
         return "Object has been deleted!!";

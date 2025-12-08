@@ -19,28 +19,32 @@ public class MainBlobObjectService {
     private final EntitiesMapper mapper;
 
     public String saveObject(String containerId, String objectName, ObjectType objectType, Long size, String parentPath) {
-        Container container = containerHelperService.validateContainerId(containerId);
-        blobObjectHelperService.validatePresenceOfSimilarObject(container, objectName, parentPath, objectType);
-        BlobObject newBlobObject = blobObjectHelperService.createNewBlobObject(objectName, objectType, size, parentPath, container);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
+        blobObjectHelperService.validatePresenceOfSimilarObject(targetContainerId, objectName, parentPath, objectType);
+        BlobObject newBlobObject = blobObjectHelperService.createNewBlobObject(objectName, objectType, size, parentPath, targetContainerId);
         return newBlobObject.getObjectId();
     }
 
     public String updateObjectName(String containerId, String objectId, String updatedName) {
-        Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        BlobObject associatedBlobObject = blobObjectHelperService.validateObjectId(objectId);
-        blobObjectHelperService.validatePresenceOfSimilarObject(associatedContainer, updatedName, associatedBlobObject.getParentPath(), associatedBlobObject.getObjectType());
-        blobObjectHelperService.updateBlobObjectName(associatedBlobObject, updatedName);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
+        BlobObject targetBlobObject = blobObjectHelperService.validateObjectId(objectId);
+        blobObjectHelperService.validatePresenceOfSimilarObject(targetContainerId, updatedName, targetBlobObject.getParentPath(), targetBlobObject.getObjectType());
+        blobObjectHelperService.updateBlobObjectName(targetBlobObject, updatedName);
         return "Name updated!!";
     }
 
     public List<ReturnBlobObject> getAllObjects(String containerId, String parentPath) {
-        Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        return blobObjectHelperService.getListOfDirectChildOfParentPath(associatedContainer, parentPath);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
+        return blobObjectHelperService.getListOfDirectChildOfParentPath(targetContainerId, parentPath);
     }
 
     public List<String> getAllDirectObjects(String containerId, String parentPathKeyword) {
-        Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        List<ReturnBlobObject> childBlobObjectsList = blobObjectHelperService.getAllChildrenOfParentPath(associatedContainer, parentPathKeyword);
+        Container targetContainer = containerHelperService.validateContainerId(containerId);
+        String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
+        List<ReturnBlobObject> childBlobObjectsList = blobObjectHelperService.getAllChildrenOfParentPath(targetContainerId, parentPathKeyword);
         return childBlobObjectsList.stream().map(ReturnBlobObject::objectId).toList();
     }
 
