@@ -35,14 +35,13 @@ public class MainBlobObjectService {
 
     public List<ReturnBlobObject> getAllObjects(String containerId, String parentPath) {
         Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        List<BlobObject> childObjects = blobObjectHelperService.getListOfDirectChildOfParentPath(associatedContainer, parentPath);
-        return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
+        return blobObjectHelperService.getListOfDirectChildOfParentPath(associatedContainer, parentPath);
     }
 
     public List<String> getAllDirectObjects(String containerId, String parentPathKeyword) {
         Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        List<BlobObject> childBlobObjectsList = blobObjectHelperService.getAllChildrenOfParentPath(associatedContainer, parentPathKeyword);
-        return childBlobObjectsList.stream().map(BlobObject::getObjectId).toList();
+        List<ReturnBlobObject> childBlobObjectsList = blobObjectHelperService.getAllChildrenOfParentPath(associatedContainer, parentPathKeyword);
+        return childBlobObjectsList.stream().map(ReturnBlobObject::objectId).toList();
     }
 
 }

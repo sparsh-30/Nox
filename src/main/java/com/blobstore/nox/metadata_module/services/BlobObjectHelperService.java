@@ -3,6 +3,7 @@ package com.blobstore.nox.metadata_module.services;
 import com.blobstore.nox.common.UUIDGenerator;
 import com.blobstore.nox.common.exception_handling.CustomAppException;
 import com.blobstore.nox.common.exception_handling.ErrorCode;
+import com.blobstore.nox.metadata_module.dtos.ReturnBlobObject;
 import com.blobstore.nox.metadata_module.models.BlobObject;
 import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.models.ObjectType;
@@ -25,17 +26,36 @@ public class BlobObjectHelperService {
         return blobObjectRepository.save(blobObject);
     }
 
+    public void deleteBlobObject(String objectId) {
+        blobObjectRepository.deleteById(objectId);
+    }
+
     public BlobObject getBlobObjectFromObjectId(String objectId) {
         Optional<BlobObject> blobObject = blobObjectRepository.findByObjectId(objectId);
         return blobObject.orElse(null);
     }
 
-    public List<BlobObject> getListOfDirectChildOfParentPath(Container parentContainer, String parentPath) {
-        return blobObjectRepository.findByParentContainerAndParentPath(parentContainer, parentPath);
+    public String generateParentPathFromObject(BlobObject targetBlobObject) {
+        return (targetBlobObject.getParentPath() + targetBlobObject.getObjectName() + "/");
     }
 
-    public List<BlobObject> getAllChildrenOfParentPath(Container parentContainer, String parentPathKeyword) {
-        return blobObjectRepository.findByParentContainerAndParentPathStartingWith(parentContainer, parentPathKeyword);
+    public List<ReturnBlobObject> getAllChildrenByObjectId(Container parentContainer, String objectId) {
+        BlobObject associatedBlobObject = validateObjectId(objectId);
+        if (associatedBlobObject.getObjectType() == ObjectType.FILE) {
+            return List.of();
+        }
+        String targetParentPath = generateParentPathFromObject(associatedBlobObject);
+        return getAllChildrenOfParentPath(parentContainer, targetParentPath);
+    }
+
+    public List<ReturnBlobObject> getListOfDirectChildOfParentPath(Container parentContainer, String parentPath) {
+        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerAndParentPath(parentContainer, parentPath);
+        return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
+    }
+
+    public List<ReturnBlobObject> getAllChildrenOfParentPath(Container parentContainer, String parentPathKeyword) {
+        List<BlobObject> childObjects = blobObjectRepository.findByParentContainerAndParentPathStartingWith(parentContainer, parentPathKeyword);
+        return childObjects.stream().map(mapper::mapBlobObjectToDTO).toList();
     }
 
     public BlobObject validateObjectId(String objectId) {

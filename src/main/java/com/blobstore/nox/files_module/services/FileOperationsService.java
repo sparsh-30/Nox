@@ -96,4 +96,9 @@ public class FileOperationsService {
         }
     }
 
+    public void deleteFileByObjectId(String objectId) {
+        Path targetFilePath = generateFilePathFromObjectId(objectId);
+        deleteFile(targetFilePath);
+    }
+
 }
