@@ -23,7 +23,13 @@ public enum ErrorCode {
 
     OBJECT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST),
 
-    INVALID_OBJECT_ID(HttpStatus.BAD_REQUEST);
+    INVALID_OBJECT_ID(HttpStatus.BAD_REQUEST),
+
+    AUTH_USER_ALREADY_EXISTS(HttpStatus.UNAUTHORIZED),
+
+    AUTH_USER_NOT_FOUND(HttpStatus.UNAUTHORIZED),
+
+    AUTH_INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED);
 
     private final HttpStatus status;
 
