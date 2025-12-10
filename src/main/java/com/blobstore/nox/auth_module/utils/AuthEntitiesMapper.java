@@ -1,5 +1,6 @@
 package com.blobstore.nox.auth_module.utils;
 
+import com.blobstore.nox.auth_module.dtos.LoginResponse;
 import com.blobstore.nox.auth_module.dtos.RegisterRequest;
 import com.blobstore.nox.auth_module.dtos.RegisterResponse;
 import com.blobstore.nox.auth_module.models.User;
@@ -22,6 +23,14 @@ public class AuthEntitiesMapper {
     // Generate RegisterResponse DTO
     public RegisterResponse generateRegisterResponse(User savedUser, String accessToken) {
         return new RegisterResponse(
+                savedUser.getUserId(),
+                accessToken
+        );
+    }
+
+    // Generate LoginResponse DTO
+    public LoginResponse generateLoginResponse(User savedUser, String accessToken){
+        return new LoginResponse(
                 savedUser.getUserId(),
                 accessToken
         );

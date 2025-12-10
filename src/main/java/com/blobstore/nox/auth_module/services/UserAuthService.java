@@ -1,6 +1,7 @@
 package com.blobstore.nox.auth_module.services;
 
 import com.blobstore.nox.auth_module.dtos.LoginRequest;
+import com.blobstore.nox.auth_module.dtos.LoginResponse;
 import com.blobstore.nox.auth_module.dtos.RegisterRequest;
 import com.blobstore.nox.auth_module.dtos.RegisterResponse;
 import com.blobstore.nox.auth_module.models.User;
@@ -25,10 +26,10 @@ public class UserAuthService {
         String hashedPassword = authHelperService.getHashedPassword(registerRequest.password());
         User u = mapper.mapRegisterRequestToUser(registerRequest, UUIDGenerator.generateUUIDString(), hashedPassword);
         User savedUser = authHelperService.saveUserEntity(u);
-        return mapper.generateRegisterResponse(savedUser, "klsdf");
+        return mapper.generateRegisterResponse(savedUser, "refreshToken");
     }
 
-    public String loginUser(LoginRequest loginRequest) {
+    public LoginResponse loginUser(LoginRequest loginRequest) {
         User u = authHelperService.getUserByUsername(loginRequest.username());
         if (u == null) {
             throw new CustomAppException("User not found", ResponseCode.AUTH_USER_NOT_FOUND);
@@ -36,7 +37,7 @@ public class UserAuthService {
         if (!authHelperService.doPasswordsMatch(loginRequest.password(), u.getPassword())) {
             throw new CustomAppException("Invalid credentials", ResponseCode.AUTH_INVALID_CREDENTIALS);
         }
-        return "User logged in!!";
+        return mapper.generateLoginResponse(u,"accessToken");
     }
 
 }

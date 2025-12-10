@@ -1,6 +1,7 @@
 package com.blobstore.nox.auth_module.controllers;
 
 import com.blobstore.nox.auth_module.dtos.LoginRequest;
+import com.blobstore.nox.auth_module.dtos.LoginResponse;
 import com.blobstore.nox.auth_module.dtos.RegisterRequest;
 import com.blobstore.nox.auth_module.dtos.RegisterResponse;
 import com.blobstore.nox.auth_module.services.UserAuthService;
@@ -34,7 +35,10 @@ public class AuthController {
     public ResponseEntity<?> loginUser(
             @RequestBody LoginRequest loginRequest
     ) {
-        return ResponseEntity.ok(userAuthService.loginUser(loginRequest));
+        LoginResponse res = userAuthService.loginUser(loginRequest);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User logged in!!", res));
     }
 
 }
