@@ -2,7 +2,7 @@ package com.blobstore.nox.metadata_module.services;
 
 import com.blobstore.nox.common.UUIDGenerator;
 import com.blobstore.nox.common.exception_handling.CustomAppException;
-import com.blobstore.nox.common.exception_handling.ErrorCode;
+import com.blobstore.nox.common.response_handling.ResponseCode;
 import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.repositories.ContainerRepository;
 import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
@@ -30,7 +30,7 @@ public class ContainerHelperService {
     public Container validateContainerId(String containerId) {
         Container container = getContainerFromContainerId(containerId);
         if (container == null) {
-            throw new CustomAppException("ContainerId is not valid", ErrorCode.INVALID_CONTAINER_ID);
+            throw new CustomAppException("ContainerId is not valid", ResponseCode.INVALID_CONTAINER_ID);
         }
         return container;
     }

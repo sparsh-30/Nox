@@ -2,7 +2,7 @@ package com.blobstore.nox.metadata_module.services;
 
 import com.blobstore.nox.common.UUIDGenerator;
 import com.blobstore.nox.common.exception_handling.CustomAppException;
-import com.blobstore.nox.common.exception_handling.ErrorCode;
+import com.blobstore.nox.common.response_handling.ResponseCode;
 import com.blobstore.nox.metadata_module.dtos.ReturnBlobObject;
 import com.blobstore.nox.metadata_module.models.BlobObject;
 import com.blobstore.nox.metadata_module.models.ObjectType;
@@ -60,7 +60,7 @@ public class BlobObjectHelperService {
     public BlobObject validateObjectId(String objectId) {
         BlobObject associatedBlobObject = getBlobObjectFromObjectId(objectId);
         if (associatedBlobObject == null) {
-            throw new CustomAppException("ObjectId is not valid", ErrorCode.INVALID_OBJECT_ID);
+            throw new CustomAppException("ObjectId is not valid", ResponseCode.INVALID_OBJECT_ID);
         }
         return associatedBlobObject;
     }
@@ -68,7 +68,7 @@ public class BlobObjectHelperService {
     public void validatePresenceOfSimilarObject(String parentContainerId, String objectName, String parentPath, ObjectType objectType) {
         Optional<BlobObject> associatedObject = blobObjectRepository.findByParentContainerIdAndObjectNameAndParentPathAndObjectType(parentContainerId, objectName, parentPath, objectType);
         if (associatedObject.isPresent()) {
-            throw new CustomAppException("Object already exists", ErrorCode.OBJECT_ALREADY_EXISTS);
+            throw new CustomAppException("Object already exists", ResponseCode.OBJECT_ALREADY_EXISTS);
         }
     }
 

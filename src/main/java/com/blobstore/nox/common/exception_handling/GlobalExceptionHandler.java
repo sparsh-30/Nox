@@ -1,5 +1,6 @@
 package com.blobstore.nox.common.exception_handling;
 
+import com.blobstore.nox.common.response_handling.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomAppException.class)
     public ResponseEntity<?> handleCustomAppException(CustomAppException e) {
-        return ResponseEntity.status(e.getErrorCode().status())
-                .body(Map.of(
-                        "error", e.getErrorCode().name(),
-                        "message", e.getMessage()
-                ));
+        return ResponseEntity
+                .status(e.getResponseCode().getStatus())
+                .body(new ApiResponse(e.getResponseCode().getSuccess(), e.getResponseCode(), e.getMessage(), null));
     }
 
     @ExceptionHandler(IOException.class)

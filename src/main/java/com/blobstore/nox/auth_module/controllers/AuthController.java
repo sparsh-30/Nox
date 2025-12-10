@@ -2,7 +2,10 @@ package com.blobstore.nox.auth_module.controllers;
 
 import com.blobstore.nox.auth_module.dtos.LoginRequest;
 import com.blobstore.nox.auth_module.dtos.RegisterRequest;
+import com.blobstore.nox.auth_module.dtos.RegisterResponse;
 import com.blobstore.nox.auth_module.services.UserAuthService;
+import com.blobstore.nox.common.response_handling.ApiResponse;
+import com.blobstore.nox.common.response_handling.ResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +24,10 @@ public class AuthController {
     public ResponseEntity<?> registerUser(
             @RequestBody RegisterRequest registerRequest
     ) {
-        return ResponseEntity.ok(userAuthService.registerUser(registerRequest));
+        RegisterResponse res = userAuthService.registerUser(registerRequest);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User registered!!", res));
     }
 
     @PostMapping("/login")
