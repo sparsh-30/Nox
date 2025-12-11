@@ -56,7 +56,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims(generateAccessTokenClaimsMap(userId, username, tokenType))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime*1000))
                 .signWith(getSecretKey())
                 .compact();
     }
@@ -65,7 +65,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims(generateRefreshTokenClaimsMap(userId, username, tokenType))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime))
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime*1000))
                 .signWith(getSecretKey())
                 .compact();
     }
