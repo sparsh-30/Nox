@@ -2,7 +2,7 @@ package com.blobstore.nox.content_module.services;
 
 import com.blobstore.nox.common.exception_handling.CustomAppException;
 import com.blobstore.nox.common.response_handling.ResponseCode;
-import com.blobstore.nox.content_module.utils.CacheProvider;
+import com.blobstore.nox.content_module.utils.ContentCacheProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UploadHelperService {
 
-    private final CacheProvider cacheProvider;
+    private final ContentCacheProvider cacheProvider;
 
     public void validateSessionId(String sessionId) {
         if (cacheProvider.getValueStoredForSession(sessionId) == (-1)) {

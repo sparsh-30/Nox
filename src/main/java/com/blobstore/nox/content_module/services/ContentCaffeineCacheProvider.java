@@ -1,6 +1,6 @@
 package com.blobstore.nox.content_module.services;
 
-import com.blobstore.nox.content_module.utils.CacheProvider;
+import com.blobstore.nox.content_module.utils.ContentCacheProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CaffeineCacheProvider implements CacheProvider {
+public class ContentCaffeineCacheProvider implements ContentCacheProvider {
 
     private final CacheManager cacheManager;
 

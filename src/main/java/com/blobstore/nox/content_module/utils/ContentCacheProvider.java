@@ -1,6 +1,6 @@
 package com.blobstore.nox.content_module.utils;
 
-public interface CacheProvider {
+public interface ContentCacheProvider {
 
     Integer getValueStoredForSession(String sessionId);
 
