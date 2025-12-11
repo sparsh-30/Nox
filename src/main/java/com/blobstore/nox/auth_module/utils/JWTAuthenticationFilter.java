@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -48,14 +49,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        final String[] allowedUrlsForJwtFilter = {
-                "/auth/v1/register",
+        final String[] ALLOWED_URLS = {
                 "/auth/v1/login",
-                "/auth/v1/refresh"
+                "/auth/v1/register",
+                "/auth/v1/refresh",
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-resources/**",
+                "/webjars/**",
+                "/swagger-ui.html",
+                "/h2-console/**"
         };
-        final String requestUrl = request.getRequestURI();
-        for (String url : allowedUrlsForJwtFilter) {
-            if (url.matches(requestUrl)) return true;
+        final AntPathMatcher pathMatcher = new AntPathMatcher();
+        String uri = request.getRequestURI();
+        for (String pattern : ALLOWED_URLS) {
+            if (pathMatcher.match(pattern, uri)) {
+                return true;
+            }
         }
         return false;
     }
