@@ -7,13 +7,11 @@ import com.blobstore.nox.auth_module.dtos.RegisterResponse;
 import com.blobstore.nox.auth_module.services.UserAuthService;
 import com.blobstore.nox.common.response_handling.ApiResponse;
 import com.blobstore.nox.common.response_handling.ResponseCode;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class AuthController {
             @RequestBody RegisterRequest registerRequest,
             HttpServletResponse response
     ) {
-        RegisterResponse res = userAuthService.registerUser(response,registerRequest);
+        RegisterResponse res = userAuthService.registerUser(response, registerRequest);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
                 .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User registered!!", res));
@@ -38,10 +36,21 @@ public class AuthController {
             @RequestBody LoginRequest loginRequest,
             HttpServletResponse response
     ) {
-        LoginResponse res = userAuthService.loginUser(response,loginRequest);
+        LoginResponse res = userAuthService.loginUser(response, loginRequest);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
                 .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User logged in!!", res));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        String accessToken = userAuthService.refreshToken(request, response);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User token is refreshed", accessToken));
     }
 
 }

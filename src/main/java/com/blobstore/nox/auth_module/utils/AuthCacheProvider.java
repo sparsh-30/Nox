@@ -7,4 +7,6 @@ public interface AuthCacheProvider {
     void storeRefreshToken(String userId, String tokenId, String refreshToken);
 
     void revokeRefreshToken(String userId, String tokenId);
+
+    Boolean isRefreshTokenPresent(String userId, String tokenId);
 }

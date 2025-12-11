@@ -42,5 +42,11 @@ public class AuthCaffeineCacheProvider implements AuthCacheProvider {
         getCache().evict(key);
     }
 
+    @Override
+    public Boolean isRefreshTokenPresent(String userId, String tokenId) {
+        String key = combineUserIdAndTokenId(userId, tokenId);
+        return getStoredToken(userId, tokenId) != null;
+    }
+
 
 }
