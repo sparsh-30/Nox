@@ -7,6 +7,8 @@ import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.models.ObjectType;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 public class EntitiesMapper {
 
@@ -60,6 +62,28 @@ public class EntitiesMapper {
                 .parentPath(parentPath)
                 .parentContainerId(parentContainerId)
                 .build();
+    }
+
+    // Map: Container -> Map
+    public Map<String, Object> mapContainerToMap(Container container) {
+        return Map.of(
+                "containerId", container.getContainerId(),
+                "containerName", container.getContainerName(),
+                "containerCreatedAt", container.getContainerCreatedAt()
+        );
+    }
+
+    // Map: BlobObject -> Map
+    public Map<String, Object> MapBlobObjectToMap(BlobObject blobObject) {
+        return Map.of(
+                "objectId", blobObject.getObjectId(),
+                "objectName", blobObject.getObjectName(),
+                "objectType", blobObject.getObjectType(),
+                "size", blobObject.getSize(),
+                "parentPath", blobObject.getParentPath(),
+                "objectCreatedAt", blobObject.getObjectCreatedAt(),
+                "parentContainerId", blobObject.getParentContainerId()
+        );
     }
 
 }

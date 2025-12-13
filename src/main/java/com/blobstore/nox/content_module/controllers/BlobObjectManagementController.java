@@ -1,10 +1,14 @@
 package com.blobstore.nox.content_module.controllers;
 
+import com.blobstore.nox.common.response_handling.ApiResponse;
+import com.blobstore.nox.common.response_handling.ResponseCode;
 import com.blobstore.nox.metadata_module.models.ObjectType;
 import com.blobstore.nox.metadata_module.services.MainBlobObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,15 +24,21 @@ public class BlobObjectManagementController {
             @RequestParam Long size,
             @RequestParam String parentPath
     ) {
-        return ResponseEntity.ok(mainBlobObjectService.saveObject(containerId, objectName, ObjectType.FOLDER, size, parentPath));
+        Map<String, Object> res = mainBlobObjectService.saveObject(containerId, objectName, ObjectType.FOLDER, size, parentPath);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "Object created successfully", res));
     }
 
     @GetMapping("/get/children")
-    public ResponseEntity<?> get(
+    public ResponseEntity<?> getChildren(
             @RequestParam String containerId,
             @RequestParam String parentPath
     ) {
-        return ResponseEntity.ok(mainBlobObjectService.getAllDirectObjects(containerId, parentPath));
+        Map<String, Object> res = mainBlobObjectService.getAllDirectObjects(containerId, parentPath);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, null, res));
     }
 
 }

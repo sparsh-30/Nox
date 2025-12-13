@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +19,12 @@ public class MainBlobObjectService {
     private final BlobObjectHelperService blobObjectHelperService;
     private final EntitiesMapper mapper;
 
-    public String saveObject(String containerId, String objectName, ObjectType objectType, Long size, String parentPath) {
+    public Map<String, Object> saveObject(String containerId, String objectName, ObjectType objectType, Long size, String parentPath) {
         Container targetContainer = containerHelperService.validateContainerId(containerId);
         String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
         blobObjectHelperService.validatePresenceOfSimilarObject(targetContainerId, objectName, parentPath, objectType);
         BlobObject newBlobObject = blobObjectHelperService.createNewBlobObject(objectName, objectType, size, parentPath, targetContainerId);
-        return newBlobObject.getObjectId();
+        return mapper.MapBlobObjectToMap(newBlobObject);
     }
 
     public String updateObjectName(String containerId, String objectId, String updatedName) {
@@ -41,11 +42,14 @@ public class MainBlobObjectService {
         return blobObjectHelperService.getListOfDirectChildOfParentPath(targetContainerId, parentPath);
     }
 
-    public List<String> getAllDirectObjects(String containerId, String parentPathKeyword) {
+    public Map<String, Object> getAllDirectObjects(String containerId, String parentPathKeyword) {
         Container targetContainer = containerHelperService.validateContainerId(containerId);
         String targetContainerId = containerHelperService.getTargetContainerId(targetContainer);
         List<ReturnBlobObject> childBlobObjectsList = blobObjectHelperService.getAllChildrenOfParentPath(targetContainerId, parentPathKeyword);
-        return childBlobObjectsList.stream().map(ReturnBlobObject::objectId).toList();
+        List<String> childObjectIds = childBlobObjectsList.stream().map(ReturnBlobObject::objectId).toList();
+        return Map.of(
+                "childObjectIds", childObjectIds
+        );
     }
 
 }

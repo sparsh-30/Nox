@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -17,20 +18,21 @@ public class MainUploadService {
 
     private final UploadHelperService uploadHelperService;
 
-    public String startUploadSession() {
+    public Map<String, Object> startUploadSession() {
         String uuidString = UUIDGenerator.generateUUIDString();
         uploadHelperService.addSessionIdToCache(uuidString);
-        return uuidString;
+        return Map.of(
+                "sessionId", uuidString
+        );
     }
 
-    public String uploadChunkToStorage(String sessionId, Integer chunkNumber, MultipartFile chunk) throws IOException {
+    public void uploadChunkToStorage(String sessionId, Integer chunkNumber, MultipartFile chunk) throws IOException {
         uploadHelperService.validateSessionId(sessionId);
         fileOperationsService.saveChunk(sessionId, chunkNumber, chunk);
         uploadHelperService.incrementChunkNumberInCache(sessionId);
-        return "Chunk uploaded successfully!!";
     }
 
-    public String mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks) {
+    public void mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks) {
         uploadHelperService.validateSessionId(sessionId);
 
         // Obtain the objectId
@@ -39,16 +41,14 @@ public class MainUploadService {
         Path targetFilePath = fileOperationsService.generateFilePathFromObjectId(objectId);
         fileOperationsService.mergeChunksToFinalFile(targetFilePath, sessionId, totalChunks);
         uploadHelperService.deleteSessionIdFromCache(sessionId);
-        return "File merged successfully!!";
     }
 
-    public String mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks) {
+    public void mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks) {
         uploadHelperService.validateSessionId(sessionId);
         Path targetFilePath = fileOperationsService.generateFilePathFromObjectId(objectId);
         fileOperationsService.truncateFile(targetFilePath);
         fileOperationsService.mergeChunksToFinalFile(targetFilePath, sessionId, totalChunks);
         uploadHelperService.deleteSessionIdFromCache(sessionId);
-        return "Successfully override the file";
     }
 
 }

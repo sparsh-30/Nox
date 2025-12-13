@@ -1,30 +1,33 @@
 package com.blobstore.nox.metadata_module.services;
 
 import com.blobstore.nox.metadata_module.models.Container;
+import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class MainContainerService {
 
     private final ContainerHelperService containerHelperService;
+    private final EntitiesMapper mapper;
 
-    public String createContainerUsingContainerName(String containerName) {
+    public Map<String, Object> createContainerUsingContainerName(String containerName) {
         Container createdContainer = containerHelperService.createNewContainer(containerName);
-        return createdContainer.getContainerId();
+        return mapper.mapContainerToMap(createdContainer);
     }
 
-    public String updateNameOfContainer(String containerId, String updatedName) {
+    public Map<String, Object> updateNameOfContainer(String containerId, String updatedName) {
         Container associatedContainer = containerHelperService.validateContainerId(containerId);
-        containerHelperService.updateContainerName(associatedContainer, updatedName);
-        return "Name Updated!!";
+        Container containerWithUpdatedName = containerHelperService.updateContainerName(associatedContainer, updatedName);
+        return mapper.mapContainerToMap(containerWithUpdatedName);
     }
 
-    public String deleteContainer(String containerId) {
+    public void deleteContainer(String containerId) {
         Container associatedContainer = containerHelperService.validateContainerId(containerId);
         containerHelperService.deleteContainer(associatedContainer);
-        return "Container deleted!!";
     }
 
 }

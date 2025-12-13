@@ -23,7 +23,7 @@ public class ContainerHelperService {
         return container.orElse(null);
     }
 
-    public String getTargetContainerId(Container targetContainer){
+    public String getTargetContainerId(Container targetContainer) {
         return targetContainer.getContainerId();
     }
 
@@ -39,9 +39,9 @@ public class ContainerHelperService {
         return containerRepository.save(container);
     }
 
-    public void updateContainerName(Container container, String updatedName) {
+    public Container updateContainerName(Container container, String updatedName) {
         container.setContainerName(updatedName);
-        saveContainer(container);
+        return saveContainer(container);
     }
 
     public Container createNewContainer(String containerName) {
