@@ -56,7 +56,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims(generateAccessTokenClaimsMap(userId, username, tokenType))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime*1000))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationTime * 1000))
                 .signWith(getSecretKey())
                 .compact();
     }
@@ -65,7 +65,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims(generateRefreshTokenClaimsMap(userId, username, tokenType))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime*1000))
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationTime * 1000))
                 .signWith(getSecretKey())
                 .compact();
     }
@@ -108,6 +108,17 @@ public class JWTService {
                 .sameSite("Strict")
                 .path("/auth/v1/refresh")
                 .maxAge(refreshTokenExpirationTime)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public void revokeRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("Strict")
+                .path("/auth/v1/refresh")
+                .maxAge(0)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }

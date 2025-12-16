@@ -58,6 +58,21 @@ public class UserAuthService {
         return mapper.generateLoginResponse(u, accessToken);
     }
 
+    public void logoutUser(HttpServletRequest request, HttpServletResponse response, String userId) {
+        User u = authHelperService.getUserByUserId(userId);
+        if (u == null) {
+            throw new CustomAppException("User not found", ResponseCode.AUTH_USER_NOT_FOUND);
+        }
+        String refreshToken = jwtService.extractRefreshToken(request);
+        if (!jwtService.isRefreshTokenValid(refreshToken)) {
+            throw new CustomAppException("Refresh token is not valid", ResponseCode.INVALID_REFRESH_TOKEN);
+        }
+        Map<String, String> temp = jwtService.extractUserIdAndTokenIdFromToken(refreshToken);
+        String tokenId = temp.get("tokenId");
+        authCacheProvider.revokeRefreshToken(userId, tokenId);
+        jwtService.revokeRefreshTokenCookie(response, refreshToken);
+    }
+
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
         if (jwtService.extractRefreshToken(request) == null) {
             throw new CustomAppException("No refresh token is present", ResponseCode.REFRESH_TOKEN_NOT_PRESENT);

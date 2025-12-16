@@ -28,7 +28,7 @@ public class AuthController {
         RegisterResponse res = userAuthService.registerUser(response, registerRequest);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
-                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User registered!!", res));
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "User registered!!", res));
     }
 
     @PostMapping("/login")
@@ -39,7 +39,19 @@ public class AuthController {
         LoginResponse res = userAuthService.loginUser(response, loginRequest);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
-                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User logged in!!", res));
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "User logged in!!", res));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logoutUser(
+            @RequestParam String userId,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        userAuthService.logoutUser(request, response, userId);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS.getStatus())
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "User logged out!!", null));
     }
 
     @PostMapping("/refresh")
@@ -50,7 +62,7 @@ public class AuthController {
         String accessToken = userAuthService.refreshToken(request, response);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
-                .body(new ApiResponse(ResponseCode.SUCCESS.getSuccess(), ResponseCode.SUCCESS, "User token is refreshed", accessToken));
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "User token is refreshed", accessToken));
     }
 
 }
