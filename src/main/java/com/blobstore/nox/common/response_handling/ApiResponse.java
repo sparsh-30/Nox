@@ -9,11 +9,11 @@ public record ApiResponse(
         Boolean success,
         ResponseCode code,
         String message,
-        Object data,
+        Object payload,
         Instant timestamp
 ) {
-    public ApiResponse(Boolean success,ResponseCode code, String message, Object data) {
-        this(success, code, message, data, Instant.now());
+    public ApiResponse(Boolean success,ResponseCode code, String message, Object payload) {
+        this(success, code, message, payload, Instant.now());
     }
 }
 

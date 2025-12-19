@@ -24,6 +24,7 @@ public class AuthEntitiesMapper {
     public RegisterResponse generateRegisterResponse(User savedUser, String accessToken) {
         return new RegisterResponse(
                 savedUser.getUserId(),
+                savedUser.getUsername(),
                 accessToken
         );
     }
@@ -32,6 +33,7 @@ public class AuthEntitiesMapper {
     public LoginResponse generateLoginResponse(User savedUser, String accessToken){
         return new LoginResponse(
                 savedUser.getUserId(),
+                savedUser.getUsername(),
                 accessToken
         );
     }
