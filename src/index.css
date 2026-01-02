@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import "tailwindcss";
+@plugin 'tailwind-scrollbar'{
+    noncompatible: true;
+}
+
+@theme{
+    --color-brand-primary-200: #CAEEEB;
+    --color-brand-primary-400: #00BEAA;
+    --color-brand-primary-600: #007F78;
+    --color-brand-primary-800: #203233;
+    
+    --color-primary-bg: #ffffff;
+    --color-secondary-bg: #F4F4F4;
+
+    --color-primary-text: #000000;
+    --color-secondary-text: #000000;
+
+    --color-primary-border: #979A9F;
+
+    --font-opensans: "Open Sans", "sans-serif";
+
+    --breakpoint-bp: 900px;
+
+}
