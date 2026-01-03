@@ -1,9 +1,10 @@
 import React from 'react'
+import Dashboard from './pages/Dashboard'
 
 const App = () => {
   return (
-    <div className='text-sm font-opensans'>
-      <div>Hello World</div>
+    <div className='text-sm font-poppins font-semibold'>
+      <Dashboard />
     </div>
   )
 }
