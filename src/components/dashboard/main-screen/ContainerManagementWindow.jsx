@@ -1,0 +1,41 @@
+import React from "react";
+import useContainerStore from "../../../utils/store/ContainerStore";
+import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
+import { formatTimestamp } from "../../../utils/store/FormatTimestamp";
+
+const ContainerManagementWindow = () => {
+  const containers = useContainerStore((state) => state.containers);
+  const selectedContainerId = useSelectedContainerStore(
+    (state) => state.selectedContainerId
+  );
+  const containerToDisplay = containers.filter(
+    (container) => container.containerId === selectedContainerId
+  );
+  return (
+    <div className="w-9/10 h-fit bp:h-50 p-8 my-5 mx-auto bg-primary-bg rounded-2xl flex flex-col bp:flex-row items-center gap-5">
+      <div className="w-full bp:w-1/2 bp:h-full bg-brand-primary-200 p-3 rounded-2xl">
+        <div className="text-xl mb-4 font-bold">Container Info</div>
+        <div className="flex mb-2">
+          <div className="w-1/2">Name</div>
+          <div className="w-1/2">{containerToDisplay[0]?.containerName}</div>
+        </div>
+        <div className="flex">
+          <div className="w-1/2">Created At</div>
+          <div className="w-1/2">
+            {formatTimestamp(containerToDisplay[0]?.containerCreatedAt)}
+          </div>
+        </div>
+      </div>
+      <div className="w-full bp:w-1/2 h-full flex flex-1 flex-col gap-5">
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer">
+          Empty Container
+        </div>
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer">
+          Delete Container
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ContainerManagementWindow;
