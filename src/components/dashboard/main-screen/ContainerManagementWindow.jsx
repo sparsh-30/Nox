@@ -27,10 +27,10 @@ const ContainerManagementWindow = () => {
         </div>
       </div>
       <div className="w-full bp:w-1/2 h-full flex flex-1 flex-col gap-5">
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer">
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
           Empty Container
         </div>
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer">
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
           Delete Container
         </div>
       </div>

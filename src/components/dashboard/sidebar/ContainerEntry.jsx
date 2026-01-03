@@ -23,7 +23,7 @@ const ContainerEntry = ({ containerId, containerName, isSelected }) => {
           isSelected
             ? "bg-primary-bg text-brand-primary-600"
             : "hover:bg-brand-primary-400 hover:text-primary-bg"
-        }  cursor-pointer`}
+        }  cursor-pointer transition duration-100 ease-in-out`}
     >
       <LuContainer />
       <div>{containerName}</div>
