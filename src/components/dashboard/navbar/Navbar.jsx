@@ -1,6 +1,7 @@
 import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
+import { getProfileColor } from "../../../utils/ProfileColors";
 
 const Navbar = ({ isMenuOpen, toggleMenu }) => {
   const username = "test";
@@ -8,7 +9,10 @@ const Navbar = ({ isMenuOpen, toggleMenu }) => {
     <div className="w-screen h-fit px-5 bp:px-10 py-2 flex items-center justify-between">
       <div className="text-4xl">NOX</div>
       <div className="bp:flex items-center gap-2 hidden">
-        <div className="w-10 h-10 rounded-xl text-2xl font-bold bg-brand-primary-600 text-secondary-text flex items-center justify-center">
+        <div
+          style={{ backgroundColor: getProfileColor(username) }}
+          className="w-10 h-10 rounded-xl text-2xl font-bold text-secondary-text flex items-center justify-center"
+        >
           {username.charAt(0).toUpperCase()}
         </div>
         <div className="font-semibold w-fit h-fit">

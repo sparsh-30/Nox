@@ -16,7 +16,7 @@ const Sidebar = () => {
           updateContainerSearch={setContainerSearch}
         />
       </div>
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-5">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-5 scrollbar-thin scrollbar-thumb-secondary-text scrollbar-track-brand-primary-600 scrollbar-thumb-rounded-full scrollbar-no-buttons">
         <Containers containerSearch={containerSearch} />
       </div>
       <div className="shrink-0">
