@@ -14,7 +14,7 @@ const ContainerSearch = ({ containerSearch, updateContainerSearch }) => {
           onChange={() => updateContainerSearch(searchInputRef.current.value)}
           ref={searchInputRef}
         />
-        <div className="text-brand-primary-600 px-1">
+        <div className="text-brand-primary-600 px-2">
           {containerSearch === "" ? (
             <FaSearch />
           ) : (

@@ -2,6 +2,8 @@ import React from "react";
 import useContainerStore from "../../../utils/store/ContainerStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import { formatTimestamp } from "../../../utils/store/FormatTimestamp";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { AiOutlineClear } from "react-icons/ai";
 
 const ContainerManagementWindow = () => {
   const containers = useContainerStore((state) => state.containers);
@@ -27,11 +29,17 @@ const ContainerManagementWindow = () => {
         </div>
       </div>
       <div className="w-full bp:w-1/2 h-full flex flex-1 flex-col gap-5">
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
-          Empty Container
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
+          <div>Empty Container</div>
+          <div className="text-lg">
+            <FaRegTrashCan />
+          </div>
         </div>
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
-          Delete Container
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
+          <div>Delete Container</div>
+          <div className="text-xl">
+            <AiOutlineClear />
+          </div>
         </div>
       </div>
     </div>
