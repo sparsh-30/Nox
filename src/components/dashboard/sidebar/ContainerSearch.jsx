@@ -5,7 +5,7 @@ import { FaXmark } from "react-icons/fa6";
 const ContainerSearch = ({ containerSearch, updateContainerSearch }) => {
   const searchInputRef = useRef(null);
   return (
-    <div className="w-full h-fit mb-5">
+    <div className="w-full h-fit mb-2">
       <div className="w-full h-fit rounded-md relative bg-primary-bg flex items-center">
         <input
           className="w-full text-brand-primary-400 bg-primary-bg pl-2 py-2 outline-none rounded-md"

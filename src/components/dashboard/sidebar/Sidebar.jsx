@@ -5,21 +5,21 @@ import Containers from "./Containers";
 import SidebarFooter from "./SidebarFooter";
 
 const Sidebar = () => {
-  const [containerSearch, SetContainerSearch] = useState("");
-  const updateContainerSearch = (val) => {
-    SetContainerSearch(val);
-  };
+  const [containerSearch, setContainerSearch] = useState("");
+
   return (
-    <div className="w-full h-full flex-1 bg-brand-primary-600 text-secondary-text flex flex-col justify-between">
-      <div className="px-5">
+    <div className="h-full w-full bg-brand-primary-600 text-secondary-text flex flex-col overflow-hidden">
+      <div className="px-5 pt-4 shrink-0">
         <ContainersHeader />
         <ContainerSearch
           containerSearch={containerSearch}
-          updateContainerSearch={updateContainerSearch}
+          updateContainerSearch={setContainerSearch}
         />
+      </div>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-5">
         <Containers containerSearch={containerSearch} />
       </div>
-      <div>
+      <div className="shrink-0">
         <SidebarFooter />
       </div>
     </div>
