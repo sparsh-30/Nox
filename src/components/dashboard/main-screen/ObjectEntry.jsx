@@ -6,6 +6,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { AiOutlineClear } from "react-icons/ai";
 import { formatBytes, formatTimestamp } from "../../../utils/CommonMethods";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
+import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 
 const ObjectEntry = ({ object, isEven }) => {
   const [expandTile, setExpandTile] = useState(false);
@@ -15,11 +16,27 @@ const ObjectEntry = ({ object, isEven }) => {
   const setCurrentParentPath = useParentPathStore(
     (state) => state.setCurrentParentPath
   );
+  const updateConfirmationModal = useModalToggleStore(
+    (state) => state.updateConfirmationModal
+  );
+  const updateMiscellaneousData = useModalToggleStore(
+    (state) => state.updateMiscellaneousData
+  );
 
   const handleFolderOpen = () => {
     if (object.objectType === "FILE") return;
     setCurrentParentPath(currentParentPath + object.objectName + "/");
   };
+
+  const handleEmptyFolder = () => {
+    updateMiscellaneousData(object.objectName);
+    updateConfirmationModal("emptyFolder");
+  };
+
+  const handleDeleteObject = () => {
+    updateMiscellaneousData(object.objectId);
+    updateConfirmationModal("deleteObject");
+  }
 
   const handleTileExpand = (e) => {
     e.stopPropagation();
@@ -83,6 +100,7 @@ const ObjectEntry = ({ object, isEven }) => {
       >
         <div className="w-full px-2 py-2 flex justify-center items-center gap-3">
           <div
+            onClick={handleEmptyFolder}
             className={`w-1/2 py-1 bg-brand-primary-600 text-secondary-text text-center rounded-md ${
               object.objectType === "FOLDER" ? "flex" : "hidden"
             } items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400`}
@@ -93,6 +111,7 @@ const ObjectEntry = ({ object, isEven }) => {
             </div>
           </div>
           <div
+            onClick={handleDeleteObject}
             className={`w-1/2 py-1 bg-danger text-secondary-text text-center rounded-md ${
               object.objectType === "FOLDER" ? "flex" : "hidden"
             } items-center justify-center gap-1 cursor-pointer hover:bg-red-400`}
@@ -103,6 +122,7 @@ const ObjectEntry = ({ object, isEven }) => {
             </div>
           </div>
           <div
+            onClick={handleDeleteObject}
             className={`w-1/2 py-1 bg-danger text-secondary-text text-center rounded-md ${
               object.objectType === "FILE" ? "flex" : "hidden"
             } items-center justify-center gap-1 cursor-pointer hover:bg-red-400`}

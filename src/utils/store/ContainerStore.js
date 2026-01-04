@@ -10,6 +10,13 @@ const useContainerStore = create((set) => ({
     set((state) => ({
       containers: [...state.containers, newContainer],
     })),
+
+  removeContainer: (containerId) =>
+    set((state) => ({
+      containers: state.containers.filter(
+        (cont) => cont.containerId !== containerId
+      ),
+    })),
 }));
 
 export default useContainerStore;

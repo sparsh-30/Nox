@@ -3,12 +3,16 @@ import Navbar from "../components/dashboard/navbar/Navbar";
 import Sidebar from "../components/dashboard/sidebar/Sidebar";
 import MainWindow from "../components/dashboard/main-screen/MainWindow";
 import SingleFieldModal from "../components/dashboard/modals/SingleFieldModal";
+import ConfirmationModal from "../components/dashboard/modals/ConfirmationModal";
 import useModalToggleStore from "../utils/store/ModalToggleStore";
 
 const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const singleFieldModal = useModalToggleStore(
     (state) => state.singleFieldModal
+  );
+  const confirmationModal = useModalToggleStore(
+    (state) => state.confirmationModal
   );
   return (
     <>
@@ -35,6 +39,7 @@ const Dashboard = () => {
         </div>
       </div>
       {singleFieldModal ? <SingleFieldModal /> : ""}
+      {confirmationModal ? <ConfirmationModal /> : ""}
     </>
   );
 };

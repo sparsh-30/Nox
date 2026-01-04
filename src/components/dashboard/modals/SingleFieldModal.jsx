@@ -18,6 +18,9 @@ const SingleFieldModal = () => {
   const selectedContainerId = useSelectedContainerStore(
     (state) => state.selectedContainerId
   );
+  const setSelectedContainerId = useSelectedContainerStore(
+    (state) => state.setSelectedContainerId
+  );
   const currentParentPath = useParentPathStore(
     (state) => state.currentParentPath
   );
@@ -41,6 +44,7 @@ const SingleFieldModal = () => {
           })
           .then((res) => {
             addNewContainer(res.data.payload);
+            setSelectedContainerId(res.data.payload.containerId);
             closeSingleFieldModal();
           })
           .catch((err) => console.log(err));
