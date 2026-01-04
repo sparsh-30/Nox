@@ -13,7 +13,7 @@ const ObjectsManagementWindow = () => {
         objectSearch={objectSearch}
         updateObjectSearch={updateObjectSearch}
       />
-      <ObjectsTable />
+      <ObjectsTable objectSearch={objectSearch} />
     </div>
   );
 };
