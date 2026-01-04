@@ -1,5 +1,6 @@
 package com.blobstore.nox.metadata_module.services;
 
+import com.blobstore.nox.content_module.services.ContentManagementHelperService;
 import com.blobstore.nox.metadata_module.models.Container;
 import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class MainContainerService {
 
     private final ContainerHelperService containerHelperService;
+    private final ContentManagementHelperService contentManagementHelperService;
     private final EntitiesMapper mapper;
 
     public Map<String, Object> createContainerUsingContainerName(String containerName) {
@@ -27,6 +29,7 @@ public class MainContainerService {
 
     public void deleteContainer(String containerId) {
         Container associatedContainer = containerHelperService.validateContainerId(containerId);
+        contentManagementHelperService.emptyAllChildrenOfParentPath(containerId,"/");
         containerHelperService.deleteContainer(associatedContainer);
     }
 
