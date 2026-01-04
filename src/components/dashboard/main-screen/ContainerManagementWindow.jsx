@@ -1,7 +1,7 @@
 import React from "react";
 import useContainerStore from "../../../utils/store/ContainerStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
-import { formatTimestamp } from "../../../utils/store/FormatTimestamp";
+import { formatTimestamp } from "../../../utils/CommonMethods";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { AiOutlineClear } from "react-icons/ai";
 

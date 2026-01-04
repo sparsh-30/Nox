@@ -1,63 +1,34 @@
-import React from "react";
+import { useEffect } from "react";
 import ObjectEntry from "./ObjectEntry";
+import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
+import useParentPathStore from "../../../utils/store/ParentPathStore";
+import useObjectStore from "../../../utils/store/ObjectStore";
+import { axiosInstance } from "../../../utils/AxiosConfig";
 
 const ObjectsTable = () => {
-  const dummyData = [
-    {
-      objectName: "obj1",
-      objectType: "FOLDER",
-      size: 3456,
-      createdAt: Date.now(),
-    },
-    {
-      objectName: "obj2",
-      objectType: "FILE",
-      size: 67543,
-      createdAt: Date.now(),
-    },
-    { objectName: "obj3", objectType: "FILE", size: 3, createdAt: Date.now() },
-    {
-      objectName: "obj4",
-      objectType: "FOLDER",
-      size: 3774,
-      createdAt: Date.now(),
-    },
-    { objectName: "obj5", objectType: "FILE", size: 65, createdAt: Date.now() },
-    {
-      objectName: "obj6",
-      objectType: "FOLDER",
-      size: 3475,
-      createdAt: Date.now(),
-    },
-    {
-      objectName: "obj1",
-      objectType: "FOLDER",
-      size: 3456,
-      createdAt: Date.now(),
-    },
-    {
-      objectName: "obj2",
-      objectType: "FILE",
-      size: 67543,
-      createdAt: Date.now(),
-    },
-    { objectName: "obj3", objectType: "FILE", size: 3, createdAt: Date.now() },
-    {
-      objectName: "obj4",
-      objectType: "FOLDER",
-      size: 3774,
-      createdAt: Date.now(),
-    },
-    { objectName: "obj5", objectType: "FILE", size: 65, createdAt: Date.now() },
-    {
-      objectName: "obj6",
-      objectType: "FOLDER",
-      size: 3475,
-      createdAt: Date.now(),
-    },
-  ];
+  const selectedContainerId = useSelectedContainerStore(
+    (state) => state.selectedContainerId
+  );
+  const currentParentPath = useParentPathStore(
+    (state) => state.currentParentPath
+  );
+  const objects = useObjectStore((state) => state.objects);
+  const updateObjectsList = useObjectStore((state) => state.updateObjectsList);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/api/v1/object/get/children", {
+        params: {
+          containerId: selectedContainerId,
+          parentPath: currentParentPath,
+        },
+      })
+      .then((res) => updateObjectsList(res.data.payload))
+      .catch((err) => console.log(err));
+  }, [selectedContainerId, currentParentPath]);
+
   return (
-    <div className="w-full h-[75vh] overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-brand-primary-600 scrollbar-track-primary-bg">
+    <div className="w-full h-fit max-h-[75vh] overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-brand-primary-600 scrollbar-track-primary-bg">
       <div className="min-w-140">
         <div className="w-full p-2 flex items-center bg-brand-primary-200 rounded-t-lg">
           <div className="w-10"></div>
@@ -68,7 +39,7 @@ const ObjectsTable = () => {
             <div className="w-1/4">Created At</div>
           </div>
         </div>
-        {dummyData.map((obj, index) => (
+        {objects.map((obj, index) => (
           <ObjectEntry key={index} isEven={index % 2 === 0} object={obj} />
         ))}
       </div>

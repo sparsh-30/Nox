@@ -4,23 +4,21 @@ import { FaRegFolder } from "react-icons/fa";
 import { FaRegFile } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { AiOutlineClear } from "react-icons/ai";
+import { formatBytes, formatTimestamp } from "../../../utils/CommonMethods";
+import useParentPathStore from "../../../utils/store/ParentPathStore";
 
 const ObjectEntry = ({ object, isEven }) => {
   const [expandTile, setExpandTile] = useState(false);
-  function formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return "0 B";
-
-    const k = 1024;
-    const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    const value = bytes / Math.pow(k, i);
-
-    return `${parseFloat(value.toFixed(decimals))} ${sizes[i]}`;
-  }
+  const currentParentPath = useParentPathStore(
+    (state) => state.currentParentPath
+  );
+  const setCurrentParentPath = useParentPathStore(
+    (state) => state.setCurrentParentPath
+  );
 
   const handleFolderOpen = () => {
-    console.log("open folder");
+    if (object.objectType === "FILE") return;
+    setCurrentParentPath(currentParentPath + object.objectName + "/");
   };
 
   const handleTileExpand = (e) => {
@@ -30,10 +28,7 @@ const ObjectEntry = ({ object, isEven }) => {
 
   return (
     <div className={`${isEven ? "bg-secondary-bg" : "bg-primary-bg"}`}>
-      <div
-        onClick={() => handleFolderOpen()}
-        className="w-full p-2 flex items-center cursor-pointer"
-      >
+      <div className="w-full p-2 flex items-center">
         <div className="w-10 h-full">
           <div
             onClick={(e) => handleTileExpand(e)}
@@ -52,14 +47,20 @@ const ObjectEntry = ({ object, isEven }) => {
           <div className="w-1/4 flex items-center">{object.objectName}</div>
           <div className="w-1/4 flex items-center">
             {object.objectType === "FOLDER" ? (
-              <div className="bg-blue-100 px-3 py-0.5 text-blue-800 font-bold text-xs w-fit rounded-lg flex justify-center items-center gap-2">
+              <div
+                onClick={handleFolderOpen}
+                className="bg-blue-100 px-3 py-0.5 text-blue-800 font-bold text-xs w-fit rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+              >
                 <div>
                   <FaRegFolder />
                 </div>
                 <div>FOLDER</div>
               </div>
             ) : (
-              <div className="bg-yellow-100 px-3 py-0.5 text-yellow-800 font-bold text-xs w-fit rounded-lg flex justify-center items-center gap-2">
+              <div
+                onClick={handleFolderOpen}
+                className="bg-yellow-100 px-3 py-0.5 text-yellow-800 font-bold text-xs w-fit rounded-lg flex justify-center items-center gap-2 cursor-pointer"
+              >
                 <div>
                   <FaRegFile />
                 </div>
@@ -70,7 +71,9 @@ const ObjectEntry = ({ object, isEven }) => {
           <div className="w-1/4 flex items-center">
             {formatBytes(object.size)}
           </div>
-          <div className="w-1/4 flex items-center">{object.createdAt}</div>
+          <div className="w-1/4 flex items-center">
+            {formatTimestamp(object.objectCreatedAt)}
+          </div>
         </div>
       </div>
       <div
