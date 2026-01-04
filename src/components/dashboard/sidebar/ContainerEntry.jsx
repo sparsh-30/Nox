@@ -1,6 +1,7 @@
 import React from "react";
 import { LuContainer } from "react-icons/lu";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
+import useParentPathStore from "../../../utils/store/ParentPathStore";
 
 const ContainerEntry = ({ containerId, containerName, isSelected }) => {
   const selectedContainerId = useSelectedContainerStore(
@@ -9,8 +10,12 @@ const ContainerEntry = ({ containerId, containerName, isSelected }) => {
   const setSelectedContainerId = useSelectedContainerStore(
     (state) => state.setSelectedContainerId
   );
+  const setCurrentParentPath = useParentPathStore(
+    (state) => state.setCurrentParentPath
+  );
 
   const handleContainerClick = () => {
+    setCurrentParentPath("/");
     if (selectedContainerId === containerId) setSelectedContainerId("");
     else setSelectedContainerId(containerId);
   };

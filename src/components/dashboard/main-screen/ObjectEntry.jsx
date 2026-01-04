@@ -69,7 +69,7 @@ const ObjectEntry = ({ object, isEven }) => {
             )}
           </div>
           <div className="w-1/4 flex items-center">
-            {formatBytes(object.size)}
+            {object.objectType === "FILE" ? formatBytes(object.size) : "-"}
           </div>
           <div className="w-1/4 flex items-center">
             {formatTimestamp(object.objectCreatedAt)}

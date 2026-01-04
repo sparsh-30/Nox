@@ -37,11 +37,7 @@ const ObjectsTable = ({ objectSearch }) => {
   return (
     <div className="w-full h-fit max-h-[75vh] overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-brand-primary-600 scrollbar-track-primary-bg">
       <div className="min-w-140">
-        <div
-          className={`w-full p-2 items-center bg-brand-primary-200 rounded-t-lg ${
-            objects.length === 0 ? "hidden" : "flex"
-          }`}
-        >
+        <div className="w-full p-2 flex items-center bg-brand-primary-200 rounded-t-lg">
           <div className="w-10"></div>
           <div className="flex w-full">
             <div className="w-1/4">Name</div>

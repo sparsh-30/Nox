@@ -4,6 +4,7 @@ import { FaXmark } from "react-icons/fa6";
 import { FaRegFolderClosed } from "react-icons/fa6";
 import { FaUpload } from "react-icons/fa6";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
+import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import { trimLastSegment } from "../../../utils/CommonMethods";
 
 const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
@@ -12,6 +13,9 @@ const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
   );
   const setCurrentParentPath = useParentPathStore(
     (state) => state.setCurrentParentPath
+  );
+  const updateSingleFieldModal = useModalToggleStore(
+    (state) => state.updateSingleFieldModal
   );
 
   const handleBack = () => {
@@ -57,7 +61,10 @@ const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
           </div>
         </div>
         <div className="w-full bp:w-fit flex items-center gap-3">
-          <div className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out">
+          <div
+            onClick={() => updateSingleFieldModal("createFolder")}
+            className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out"
+          >
             <div>Create Folder</div>
             <div>
               <FaRegFolderClosed />
