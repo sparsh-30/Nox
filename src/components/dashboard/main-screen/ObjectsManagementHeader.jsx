@@ -36,13 +36,13 @@ const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
           </div>
         </div>
         <div className="w-full bp:w-fit flex items-center gap-3">
-          <div className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400">
+          <div className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out">
             <div>Create Folder</div>
             <div>
               <FaRegFolderClosed />
             </div>
           </div>
-          <div className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400">
+          <div className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out">
             <div>Upload File</div>
             <div>
               <FaUpload />

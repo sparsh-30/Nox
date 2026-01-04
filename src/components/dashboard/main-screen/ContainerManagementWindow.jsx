@@ -29,13 +29,13 @@ const ContainerManagementWindow = () => {
         </div>
       </div>
       <div className="w-full bp:w-1/2 h-full flex flex-1 flex-col gap-5">
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
+        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out hover:scale-105">
           <div>Empty Container</div>
           <div className="text-lg">
             <FaRegTrashCan />
           </div>
         </div>
-        <div className="w-full h-10 bp:h-1/2 bg-brand-primary-600 text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-brand-primary-400 transition duration-100 ease-in-out">
+        <div className="w-full h-10 bp:h-1/2 bg-danger text-secondary-text rounded-2xl flex items-center justify-center gap-1 text-[16px] cursor-pointer hover:bg-red-400 transition duration-100 ease-in-out hover:scale-105">
           <div>Delete Container</div>
           <div className="text-xl">
             <AiOutlineClear />

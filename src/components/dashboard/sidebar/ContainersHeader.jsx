@@ -13,7 +13,7 @@ const ContainersHeader = () => {
         </div>
       </div>
       <div className="w-full">
-        <div className="w-full bg-primary-bg text-brand-primary-400 flex items-center justify-center gap-2 py-2 rounded-md cursor-pointer">
+        <div className="w-full bg-primary-bg text-brand-primary-400 flex items-center justify-center gap-2 py-2 rounded-md cursor-pointer hover:scale-105 transition-all ease-in-out duration-100">
           <FaRegPlusSquare />
           <div>Create</div>
         </div>
