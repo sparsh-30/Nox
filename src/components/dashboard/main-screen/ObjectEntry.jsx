@@ -3,6 +3,7 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import { FaRegFolder } from "react-icons/fa";
 import { FaRegFile } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { IoMdCloudDownload } from "react-icons/io";
 import { AiOutlineClear } from "react-icons/ai";
 import { formatBytes, formatTimestamp } from "../../../utils/CommonMethods";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
@@ -36,7 +37,7 @@ const ObjectEntry = ({ object, isEven }) => {
   const handleDeleteObject = () => {
     updateMiscellaneousData(object.objectId);
     updateConfirmationModal("deleteObject");
-  }
+  };
 
   const handleTileExpand = (e) => {
     e.stopPropagation();
@@ -119,6 +120,17 @@ const ObjectEntry = ({ object, isEven }) => {
             <div>Delete Folder</div>
             <div>
               <FaRegTrashCan />
+            </div>
+          </div>
+          <div
+            // onClick={handleEmptyFolder}
+            className={`w-1/2 py-1 bg-brand-primary-600 text-secondary-text text-center rounded-md ${
+              object.objectType === "FILE" ? "flex" : "hidden"
+            } items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400`}
+          >
+            <div>Download File</div>
+            <div className="text-lg">
+              <IoMdCloudDownload />
             </div>
           </div>
           <div
