@@ -8,6 +8,7 @@ import { AiOutlineClear } from "react-icons/ai";
 import { formatBytes, formatTimestamp } from "../../../utils/CommonMethods";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
+import { baseURL } from "../../../utils/AxiosConfig";
 
 const ObjectEntry = ({ object, isEven }) => {
   const [expandTile, setExpandTile] = useState(false);
@@ -42,6 +43,17 @@ const ObjectEntry = ({ object, isEven }) => {
   const handleTileExpand = (e) => {
     e.stopPropagation();
     setExpandTile(!expandTile);
+  };
+
+  const handleDownload = () => {
+    const downloadUrl = `${baseURL}/api/v1/download?objectId=${object.objectId}`;
+
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -126,6 +138,7 @@ const ObjectEntry = ({ object, isEven }) => {
           </div>
           <div
             // onClick={handleEmptyFolder}
+            onClick={handleDownload}
             className={`w-1/2 py-1 bg-brand-primary-600 text-secondary-text text-center rounded-md ${
               object.objectType === "FILE" ? "flex" : "hidden"
             } items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400`}
