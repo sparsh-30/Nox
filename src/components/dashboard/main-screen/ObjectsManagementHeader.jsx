@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { FaRegFolderClosed } from "react-icons/fa6";
-import { FaUpload } from "react-icons/fa6";
+import { IoMdCloudUpload } from "react-icons/io";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import { trimLastSegment } from "../../../utils/CommonMethods";
@@ -17,7 +17,9 @@ const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
   const updateSingleFieldModal = useModalToggleStore(
     (state) => state.updateSingleFieldModal
   );
-  const updateFileInputModal = useModalToggleStore((state) => state.updateFileInputModal);
+  const updateFileInputModal = useModalToggleStore(
+    (state) => state.updateFileInputModal
+  );
 
   const handleBack = () => {
     if (currentParentPath === "/") return;
@@ -71,10 +73,13 @@ const ObjectsManagementHeader = ({ objectSearch, updateObjectSearch }) => {
               <FaRegFolderClosed />
             </div>
           </div>
-          <div onClick={() => updateFileInputModal("uploadFile")} className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out">
+          <div
+            onClick={() => updateFileInputModal("uploadFile")}
+            className="w-1/2 bp:w-fit bg-brand-primary-600 text-secondary-text p-2 rounded-md flex items-center justify-center gap-1 cursor-pointer hover:bg-brand-primary-400 hover:scale-105 transition-all duration-100 ease-in-out"
+          >
             <div>Upload File</div>
-            <div>
-              <FaUpload />
+            <div className="text-lg">
+              <IoMdCloudUpload />
             </div>
           </div>
         </div>
