@@ -5,7 +5,7 @@ import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useContainerStore from "../../../utils/store/ContainerStore";
 import useObjectStore from "../../../utils/store/ObjectStore";
-import useParentPath from "../../../utils/store/ParentPathStore";
+import useParentPathStore from "../../../utils/store/ParentPathStore";
 import { axiosInstance } from "../../../utils/AxiosConfig";
 
 const ConfirmationModal = () => {
@@ -31,8 +31,10 @@ const ConfirmationModal = () => {
   const objects = useObjectStore((state) => state.objects);
   const updateObjectsList = useObjectStore((state) => state.updateObjectsList);
   const removeObject = useObjectStore((state) => state.removeObject);
-  const currentParentPath = useParentPath((state) => state.currentParentPath);
-
+  const currentParentPath = useParentPathStore((state) => state.currentParentPath);
+  const setCurrentParentPath = useParentPathStore(
+    (state) => state.setCurrentParentPath
+  );
 
   const fieldTypes = {
     emptyContainer: {
@@ -58,6 +60,7 @@ const ConfirmationModal = () => {
           })
           .then((res) => {
             updateObjectsList([]);
+            setCurrentParentPath("/");
             closeConfirmationModal();
           })
           .catch((err) => console.log(err));
@@ -87,13 +90,15 @@ const ConfirmationModal = () => {
           .then((res) => {
             setSelectedContainerId("");
             removeContainer(selectedContainerId);
+            setCurrentParentPath("/");
             closeConfirmationModal();
           })
           .catch((err) => console.log(err));
       },
     },
     emptyFolder: {
-      confirmationLine: "Are you sure you want to empty this folder? All data stored inside will be permanently deleted.",
+      confirmationLine:
+        "Are you sure you want to empty this folder? All data stored inside will be permanently deleted.",
       onSubmitAction: () => {
         axiosInstance
           .delete("/api/v1/folder/empty", {
@@ -110,7 +115,8 @@ const ConfirmationModal = () => {
       },
     },
     deleteObject: {
-      confirmationLine: "Are you sure you want to delete this folder? All data stored inside will be permanently deleted.",
+      confirmationLine:
+        "Are you sure you want to delete this folder? All data stored inside will be permanently deleted.",
       onSubmitAction: () => {
         axiosInstance
           .delete("/api/v1/delete/object", {

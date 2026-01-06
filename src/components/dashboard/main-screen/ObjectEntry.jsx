@@ -62,8 +62,10 @@ const ObjectEntry = ({ object, isEven }) => {
           </div>
         </div>
         <div className="w-full flex items-center">
-          <div className="w-1/4 flex items-center">{object.objectName}</div>
-          <div className="w-1/4 flex items-center">
+          <div className="w-1/4 min-w-0 wrap-break-word pr-2">
+            {object.objectName}
+          </div>
+          <div className="w-1/4 min-w-0 wrap-break-word pr-2">
             {object.objectType === "FOLDER" ? (
               <div
                 onClick={handleFolderOpen}
@@ -86,10 +88,10 @@ const ObjectEntry = ({ object, isEven }) => {
               </div>
             )}
           </div>
-          <div className="w-1/4 flex items-center">
+          <div className="w-1/4 min-w-0 wrap-break-word pr-2">
             {object.objectType === "FILE" ? formatBytes(object.size) : "-"}
           </div>
-          <div className="w-1/4 flex items-center">
+          <div className="w-1/4 min-w-0 wrap-break-word pr-2">
             {formatTimestamp(object.objectCreatedAt)}
           </div>
         </div>
