@@ -7,6 +7,7 @@ import useContainerStore from "../../../utils/store/ContainerStore";
 import useObjectStore from "../../../utils/store/ObjectStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import { axiosInstance } from "../../../utils/AxiosConfig";
+import { successToast } from "../../../utils/Toasts";
 
 const ConfirmationModal = () => {
   const closeConfirmationModal = useModalToggleStore(
@@ -31,7 +32,9 @@ const ConfirmationModal = () => {
   const objects = useObjectStore((state) => state.objects);
   const updateObjectsList = useObjectStore((state) => state.updateObjectsList);
   const removeObject = useObjectStore((state) => state.removeObject);
-  const currentParentPath = useParentPathStore((state) => state.currentParentPath);
+  const currentParentPath = useParentPathStore(
+    (state) => state.currentParentPath
+  );
   const setCurrentParentPath = useParentPathStore(
     (state) => state.setCurrentParentPath
   );
@@ -62,6 +65,7 @@ const ConfirmationModal = () => {
             updateObjectsList([]);
             setCurrentParentPath("/");
             closeConfirmationModal();
+            successToast("Container is emptied!!");
           })
           .catch((err) => console.log(err));
       },
@@ -92,6 +96,7 @@ const ConfirmationModal = () => {
             removeContainer(selectedContainerId);
             setCurrentParentPath("/");
             closeConfirmationModal();
+            successToast("Container deleted successfully!!");
           })
           .catch((err) => console.log(err));
       },
@@ -110,6 +115,7 @@ const ConfirmationModal = () => {
           .then((res) => {
             clearMiscellaneousData();
             closeConfirmationModal();
+            successToast("Folder is emptied!!");
           })
           .catch((err) => console.log(err));
       },
@@ -129,6 +135,7 @@ const ConfirmationModal = () => {
             removeObject(miscellaneousData);
             clearMiscellaneousData();
             closeConfirmationModal();
+            successToast("Object is deleted successfully!!");
           })
           .catch((err) => console.log(err));
       },

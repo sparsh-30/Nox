@@ -7,6 +7,7 @@ import useContainerStore from "../../../utils/store/ContainerStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
+import { successToast } from "../../../utils/Toasts";
 
 const SingleFieldModal = () => {
   const [inputData, setInputData] = useState("");
@@ -46,6 +47,7 @@ const SingleFieldModal = () => {
             addNewContainer(res.data.payload);
             setSelectedContainerId(res.data.payload.containerId);
             closeSingleFieldModal();
+            successToast("Container created successfully!!");
           })
           .catch((err) => console.log(err));
       },
@@ -72,6 +74,7 @@ const SingleFieldModal = () => {
           .then((res) => {
             addNewObject(res.data.payload);
             closeSingleFieldModal();
+            successToast("Folder created successfully!!");
           })
           .catch((err) => console.log(err));
       },
