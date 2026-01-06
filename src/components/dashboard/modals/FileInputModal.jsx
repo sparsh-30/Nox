@@ -1,20 +1,27 @@
 import { useState, useRef } from "react";
 import { MdCancelPresentation } from "react-icons/md";
 import { FaRegCheckSquare } from "react-icons/fa";
+import useObjectStore from "../../../utils/store/ObjectStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import { axiosInstance } from "../../../utils/AxiosConfig";
+import { formatBytes } from "../../../utils/CommonMethods";
 
 const FileInputModal = () => {
   const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
+  const MAX_UPLOAD_SIZE = 100 * 1024 * 1024; // 100 MB
 
   const fileRef = useRef(null);
   const abortRef = useRef(null);
 
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [showSizeWarning, setShowSizeWarning] = useState(false);
 
+  const objects = useObjectStore((state) => state.objects);
+  const addNewObject = useObjectStore((state) => state.addNewObject);
   const selectedContainerId = useSelectedContainerStore(
     (state) => state.selectedContainerId
   );
@@ -27,12 +34,28 @@ const FileInputModal = () => {
   );
 
   const onFileChange = (e) => {
-    fileRef.current = e.target.files[0];
+    const files = e.target.files;
+
+    if (!files || files.length === 0) {
+      fileRef.current = null;
+      setShowSizeWarning(false);
+      setIsSubmitDisabled(true);
+      return;
+    }
+
+    fileRef.current = files[0];
+    if (files[0].size > MAX_UPLOAD_SIZE) {
+      setIsSubmitDisabled(true);
+      setShowSizeWarning(true);
+      return;
+    }
+    setShowSizeWarning(false);
+    setIsSubmitDisabled(false);
   };
 
   const handleFileUpload = async () => {
     const file = fileRef.current;
-    if (!file) return;
+    if (!file || isSubmitDisabled) return;
 
     try {
       const sessionIdResponse = await axiosInstance.get("/api/v1/upload/start");
@@ -74,7 +97,8 @@ const FileInputModal = () => {
           },
         }
       );
-      console.log(mergeChunksResponse);
+      addNewObject(mergeChunksResponse.data.payload);
+      closeFileInputModal();
     } catch (e) {
       console.log(e);
     }
@@ -91,10 +115,18 @@ const FileInputModal = () => {
             onChange={(e) => onFileChange(e)}
           />
         </div>
-        <div className="text-xs text-warning">
+        {/* <div className="text-xs text-warning">
           * The file name that you selected already exists in the folder.
           Re-uploading will overwrite the existing file.
-        </div>
+        </div> */}
+        {progress}
+        {showSizeWarning ? (
+          <div className="text-xs text-danger">
+            * Max file size allowed: {formatBytes(MAX_UPLOAD_SIZE)}
+          </div>
+        ) : (
+          ""
+        )}
         <div className=" mt-5 flex justify-center items-center gap-4">
           <div
             onClick={() => closeFileInputModal()}
@@ -107,7 +139,11 @@ const FileInputModal = () => {
           </div>
           <div
             onClick={handleFileUpload}
-            className="w-1/2 py-2 px-3 font-semibold bg-brand-primary-600 cursor-pointer hover:scale-105 text-secondary-text rounded-md flex items-center justify-center gap-1 transition-all duration-100 ease-in-out"
+            className={`w-1/2 py-2 px-3 font-semibold text-secondary-text rounded-md flex items-center justify-center gap-1 transition-all duration-100 ease-in-out ${
+              isSubmitDisabled
+                ? "bg-brand-primary-600/50 cursor-not-allowed"
+                : "bg-brand-primary-600 cursor-pointer hover:scale-105"
+            }`}
           >
             <div>Confirm</div>
             <div className="text-lg">
