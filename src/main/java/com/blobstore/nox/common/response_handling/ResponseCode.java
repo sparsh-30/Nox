@@ -28,7 +28,8 @@ public enum ResponseCode {
     USER_SESSION_ALREADY_REVOKED(false,HttpStatus.UNAUTHORIZED),
     HEADER_NOT_PRESENT(false,HttpStatus.UNAUTHORIZED),
     AUTH_TOKEN_NOT_VALID(false,HttpStatus.UNAUTHORIZED),
-    AUTH_TOKEN_EXPIRED(false,HttpStatus.UNAUTHORIZED)
+    AUTH_TOKEN_EXPIRED(false,HttpStatus.UNAUTHORIZED),
+    FILE_NOT_PRESENT(false,HttpStatus.NO_CONTENT)
 
 
     ;
