@@ -4,6 +4,7 @@ import Sidebar from "../components/dashboard/sidebar/Sidebar";
 import MainWindow from "../components/dashboard/main-screen/MainWindow";
 import SingleFieldModal from "../components/dashboard/modals/SingleFieldModal";
 import ConfirmationModal from "../components/dashboard/modals/ConfirmationModal";
+import FileInputModal from "../components/dashboard/modals/FileInputModal";
 import useModalToggleStore from "../utils/store/ModalToggleStore";
 
 const Dashboard = () => {
@@ -14,6 +15,7 @@ const Dashboard = () => {
   const confirmationModal = useModalToggleStore(
     (state) => state.confirmationModal
   );
+  const fileInputModal = useModalToggleStore((state) => state.fileInputModal);
   return (
     <>
       <div className="w-screen h-screen overflow-hidden flex flex-col">
@@ -40,6 +42,7 @@ const Dashboard = () => {
       </div>
       {singleFieldModal ? <SingleFieldModal /> : ""}
       {confirmationModal ? <ConfirmationModal /> : ""}
+      {fileInputModal ? <FileInputModal /> : ""}
     </>
   );
 };
