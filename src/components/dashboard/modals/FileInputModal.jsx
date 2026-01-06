@@ -9,7 +9,8 @@ import { axiosInstance } from "../../../utils/AxiosConfig";
 import { formatBytes } from "../../../utils/CommonMethods";
 
 const FileInputModal = () => {
-  const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
+  const CHUNK_SIZE = 1024; // 4MB
+  // const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
   const MAX_UPLOAD_SIZE = 100 * 1024 * 1024; // 100 MB
 
   const fileRef = useRef(null);
@@ -55,15 +56,15 @@ const FileInputModal = () => {
 
   const handleFileUpload = async () => {
     const file = fileRef.current;
-    if (!file || isSubmitDisabled) return;
+    if (!file || isSubmitDisabled || uploading) return;
 
     try {
-      const sessionIdResponse = await axiosInstance.get("/api/v1/upload/start");
+      setUploading(true);
 
+      const sessionIdResponse = await axiosInstance.get("/api/v1/upload/start");
       const sessionId = sessionIdResponse.data.payload.sessionId;
       const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
 
-      setUploading(true);
       abortRef.current = new AbortController();
 
       for (let i = 0; i < totalChunks; i++) {
@@ -98,10 +99,16 @@ const FileInputModal = () => {
         }
       );
       addNewObject(mergeChunksResponse.data.payload);
+      setUploading(false);
       closeFileInputModal();
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const handleCloseModal = () => {
+    if (uploading) return;
+    closeFileInputModal();
   };
 
   return (
@@ -111,6 +118,7 @@ const FileInputModal = () => {
         <div className="mt-5 border border-primary-border rounded-xl">
           <input
             type="file"
+            disabled={uploading ? true : false}
             className="block w-full text-sm text-gray-500 file:m-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-brand-primary-600 file:text-secondary-text hover:file:bg-brand-primary-400 file:disabled:opacity-50 file:disabled:pointer-events-none"
             onChange={(e) => onFileChange(e)}
           />
@@ -119,18 +127,33 @@ const FileInputModal = () => {
           * The file name that you selected already exists in the folder.
           Re-uploading will overwrite the existing file.
         </div> */}
-        {progress}
         {showSizeWarning ? (
-          <div className="text-xs text-danger">
+          <div className=" mt-1 text-xs text-danger">
             * Max file size allowed: {formatBytes(MAX_UPLOAD_SIZE)}
           </div>
         ) : (
           ""
         )}
+        {uploading && (
+          <div className="my-3 flex items-center">
+            <div className="w-full h-6 border border-primary-border rounded-lg overflow-hidden">
+              <div
+                className="h-full bg-brand-primary-600 transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="px-2 text-sm">{progress}%</div>
+          </div>
+        )}
+
         <div className=" mt-5 flex justify-center items-center gap-4">
           <div
-            onClick={() => closeFileInputModal()}
-            className="w-1/2 py-2 px-3 font-semibold bg-danger text-secondary-text rounded-md flex items-center justify-center gap-1 cursor-pointer transition-all duration-100 ease-in-out hover:scale-105"
+            onClick={handleCloseModal}
+            className={`w-1/2 py-2 px-3 font-semibold  text-secondary-text rounded-md flex items-center justify-center gap-1 transition-all duration-100 ease-in-out  ${
+              uploading
+                ? "bg-danger/50 cursor-not-allowed"
+                : "bg-danger hover:scale-105 cursor-pointer"
+            }`}
           >
             <div>Close</div>
             <div className="text-lg">
@@ -140,7 +163,7 @@ const FileInputModal = () => {
           <div
             onClick={handleFileUpload}
             className={`w-1/2 py-2 px-3 font-semibold text-secondary-text rounded-md flex items-center justify-center gap-1 transition-all duration-100 ease-in-out ${
-              isSubmitDisabled
+              isSubmitDisabled || uploading
                 ? "bg-brand-primary-600/50 cursor-not-allowed"
                 : "bg-brand-primary-600 cursor-pointer hover:scale-105"
             }`}
