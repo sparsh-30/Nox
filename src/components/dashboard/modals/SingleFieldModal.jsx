@@ -77,12 +77,19 @@ const SingleFieldModal = () => {
       },
     },
   };
+
+  const handleInput = (e) => {
+    if (e.key === "Enter") {
+      (() => fieldTypes[fieldType]?.onSubmitAction?.())();
+    }
+    setInputData(e.target.value);
+  };
   return (
     <div className="h-screen w-screen z-50 absolute top-0 left-0 bg-black/30 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-secondary-bg h-fit bp:h-fit w-9/10 bp:w-4/10 px-10 py-10 gap-10 rounded-xl">
         <div>{fieldTypes[fieldType]?.userMessage}</div>
         <input
-          onChange={(e) => setInputData(e.target.value)}
+          onKeyUp={(e) => handleInput(e)}
           className="w-full my-5 px-2 py-1 font-bold outline-none border-2 border-primary-border rounded-md"
           type="text"
           placeholder={fieldTypes[fieldType]?.placeholderMessage}
