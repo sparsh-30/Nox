@@ -9,8 +9,7 @@ import { axiosInstance } from "../../../utils/AxiosConfig";
 import { formatBytes } from "../../../utils/CommonMethods";
 
 const FileInputModal = () => {
-  const CHUNK_SIZE = 1024; // 4MB
-  // const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
+  const CHUNK_SIZE = 4 * 1024 * 1024; // 4MB
   const MAX_UPLOAD_SIZE = 100 * 1024 * 1024; // 100 MB
 
   const fileRef = useRef(null);
@@ -20,6 +19,7 @@ const FileInputModal = () => {
   const [uploading, setUploading] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [showSizeWarning, setShowSizeWarning] = useState(false);
+  const [fileAlreadyExists, setFileAlreadyExists] = useState(false);
 
   const objects = useObjectStore((state) => state.objects);
   const addNewObject = useObjectStore((state) => state.addNewObject);
@@ -42,6 +42,13 @@ const FileInputModal = () => {
       setShowSizeWarning(false);
       setIsSubmitDisabled(true);
       return;
+    }
+
+    setFileAlreadyExists(false);
+    for (const obj of objects) {
+      if (obj.objectName === files[0].name && obj.objectType === "FILE") {
+        setFileAlreadyExists(true);
+      }
     }
 
     fileRef.current = files[0];
@@ -84,21 +91,42 @@ const FileInputModal = () => {
         setProgress(Math.round(((i + 1) / totalChunks) * 100));
       }
 
-      const mergeChunksResponse = await axiosInstance.put(
-        "/api/v1/upload/merge",
-        null,
-        {
-          params: {
-            sessionId: sessionId,
-            totalChunks: totalChunks,
-            objectName: file.name,
-            size: file.size,
-            parentPath: currentParentPath,
-            parentContainerId: selectedContainerId,
-          },
+      if (fileAlreadyExists) {
+        let targetObject;
+        for (const obj of objects) {
+          if (obj.objectName === file.name && obj.objectType === "FILE") {
+            targetObject = obj;
+          }
         }
-      );
-      addNewObject(mergeChunksResponse.data.payload);
+        const updateResponse = await axiosInstance.put(
+          "/api/v1/upload/update",
+          null,
+          {
+            params: {
+              sessionId: sessionId,
+              objectId: targetObject.objectName,
+              totalChunks: totalChunks,
+            },
+          }
+        );
+        console.log(updateResponse);
+      } else {
+        const mergeChunksResponse = await axiosInstance.put(
+          "/api/v1/upload/merge",
+          null,
+          {
+            params: {
+              sessionId: sessionId,
+              totalChunks: totalChunks,
+              objectName: file.name,
+              size: file.size,
+              parentPath: currentParentPath,
+              parentContainerId: selectedContainerId,
+            },
+          }
+        );
+        addNewObject(mergeChunksResponse.data.payload);
+      }
       setUploading(false);
       closeFileInputModal();
     } catch (e) {
@@ -123,10 +151,14 @@ const FileInputModal = () => {
             onChange={(e) => onFileChange(e)}
           />
         </div>
-        {/* <div className="text-xs text-warning">
-          * The file name that you selected already exists in the folder.
-          Re-uploading will overwrite the existing file.
-        </div> */}
+        {fileAlreadyExists ? (
+          <div className="text-xs text-warning">
+            * The file name that you selected already exists in the folder.
+            Re-uploading will overwrite the existing file.
+          </div>
+        ) : (
+          ""
+        )}
         {showSizeWarning ? (
           <div className=" mt-1 text-xs text-danger">
             * Max file size allowed: {formatBytes(MAX_UPLOAD_SIZE)}
