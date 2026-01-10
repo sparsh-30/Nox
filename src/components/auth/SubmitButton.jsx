@@ -1,10 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import useAuthStore from "../../utils/store/AuthStore";
+import useUserInfoStore from "../../utils/store/UserInfoStore";
 import { axiosInstance } from "../../../../frontend/src/utils/AxiosConfig";
 
 const SubmitButton = ({ clearFormValues, formValues, formType }) => {
   const authenticateUser = useAuthStore((state) => state.authenticateUser);
+  const updateUserInfo = useUserInfoStore((state) => state.updateUserInfo);
   const navigate = useNavigate();
   const handleFormSubmit = () => {
     axiosInstance
@@ -17,6 +19,7 @@ const SubmitButton = ({ clearFormValues, formValues, formType }) => {
         { withCredentials: true }
       )
       .then((res) => {
+        updateUserInfo(res.data.payload);
         authenticateUser(res.data.payload.accessToken);
         navigate("/dashboard", { replace: true });
       })

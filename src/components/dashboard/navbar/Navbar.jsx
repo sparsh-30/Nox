@@ -2,9 +2,10 @@ import React from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
 import { getProfileColor } from "../../../utils/ProfileColors";
+import useUserInfoStore from "../../../utils/store/UserInfoStore";
 
 const Navbar = ({ isMenuOpen, toggleMenu }) => {
-  const username = "test";
+  const username = useUserInfoStore((state) => state.username);
   return (
     <div className="w-screen h-fit px-5 bp:px-10 py-2 flex items-center justify-between">
       <div className="text-4xl">NOX</div>

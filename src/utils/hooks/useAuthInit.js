@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { axiosInstance } from "../AxiosConfig";
 import useAuthStore from "../store/AuthStore";
+import useUserInfoStore from "../store/UserInfoStore";
 
 const useAuthInit = () => {
   const authenticateUser = useAuthStore((state) => state.authenticateUser);
+  const updateUserInfo = useUserInfoStore((state) => state.updateUserInfo);
+  const removeUserInfo = useUserInfoStore((state) => state.removeUserInfo);
 
   useEffect(() => {
     let isMounted = true;
@@ -17,10 +20,12 @@ const useAuthInit = () => {
         );
 
         if (isMounted) {
+          updateUserInfo(response.data.payload);
           authenticateUser(response.data.payload);
         }
       } catch (error) {
         if (isMounted) {
+          removeUserInfo();
           authenticateUser(null);
         }
       }

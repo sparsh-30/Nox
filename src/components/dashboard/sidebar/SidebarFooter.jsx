@@ -1,9 +1,10 @@
 import React from "react";
+import useUserInfoStore from "../../../utils/store/UserInfoStore";
 import { FiLogOut } from "react-icons/fi";
 import { getProfileColor } from "../../../utils/ProfileColors";
 
 const SidebarFooter = () => {
-  const username = "test";
+  const username = useUserInfoStore((state) => state.username);
   return (
     <div className="py-3 px-5 text-secondary-text flex items-center justify-between bp:justify-start bp:gap-3 hover:bg-brand-primary-400 rounded-t-md cursor-pointer">
       <div className="flex items-center gap-2 bp:hidden">
