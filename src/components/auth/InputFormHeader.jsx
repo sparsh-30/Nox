@@ -6,8 +6,8 @@ const InputFormHeader = ({ formType }) => {
       <div className="text-4xl font-bold">NOX</div>
       <div className="text-primary-border">
         {formType === "register"
-          ? "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Modi, inventore."
-          : "Login"}
+          ? "Create your account and get started in seconds."
+          : "Welcome back — sign in to continue."}
       </div>
     </div>
   );
