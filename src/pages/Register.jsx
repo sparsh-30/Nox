@@ -16,8 +16,7 @@ const Register = () => {
       [fieldType]: e.target.value,
     }));
   };
-  const handleFormSubmit = () => {
-    console.log(registerFormValues);
+  const clearFormValues = () => {
     setRegisterFormValues({
       username: "",
       password: "",
@@ -41,7 +40,11 @@ const Register = () => {
             formValues={registerFormValues}
             handleFormValueChange={handleFormValueChange("password")}
           />
-          <SubmitButton handleFormSubmit={handleFormSubmit} />
+          <SubmitButton
+            clearFormValues={clearFormValues}
+            formValues={registerFormValues}
+            formType={formType}
+          />
         </div>
       </div>
     </div>

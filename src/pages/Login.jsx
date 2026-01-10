@@ -16,8 +16,7 @@ const Login = () => {
       [fieldType]: e.target.value,
     }));
   };
-  const handleFormSubmit = () => {
-    console.log(loginFormValues);
+  const clearFormValues = () => {
     setLoginFormValues({
       username: "",
       password: "",
@@ -40,7 +39,11 @@ const Login = () => {
             formValues={loginFormValues}
             handleFormValueChange={handleFormValueChange("password")}
           />
-          <SubmitButton handleFormSubmit={handleFormSubmit} />
+          <SubmitButton
+            clearFormValues={clearFormValues}
+            formValues={loginFormValues}
+            formType={formType}
+          />
         </div>
       </div>
     </div>
