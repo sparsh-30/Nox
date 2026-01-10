@@ -10,12 +10,20 @@ const Register = () => {
     username: "",
     password: "",
   });
-  const updateUsername = (val) => {
-    setRegisterFormValues({ ...registerFormValues, username: val });
+  const handleFormValueChange = (fieldType) => (e) => {
+    setRegisterFormValues((prev) => ({
+      ...prev,
+      [fieldType]: e.target.value,
+    }));
   };
-  const updatePassword = (val) => {
-    setRegisterFormValues({ ...registerFormValues, password: val });
+  const handleFormSubmit = () => {
+    console.log(registerFormValues);
+    setRegisterFormValues({
+      username: "",
+      password: "",
+    });
   };
+
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-brand-primary-200">
       <div className="w-9/10 bp:w-3/5 bp:h-4/5 bg-secondary-bg shadow-2xl rounded-4xl flex overflow-hidden">
@@ -25,15 +33,15 @@ const Register = () => {
           <FormSwitchButtons />
           <CredentialInput
             credentialType="username"
-            updateUsername={updateUsername}
-            updatePassword={updatePassword}
+            formValues={registerFormValues}
+            handleFormValueChange={handleFormValueChange("username")}
           />
           <CredentialInput
             credentialType="password"
-            updateUsername={updateUsername}
-            updatePassword={updatePassword}
+            formValues={registerFormValues}
+            handleFormValueChange={handleFormValueChange("password")}
           />
-          <SubmitButton userInputValues={registerFormValues} />
+          <SubmitButton handleFormSubmit={handleFormSubmit} />
         </div>
       </div>
     </div>

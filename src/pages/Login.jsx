@@ -10,11 +10,18 @@ const Login = () => {
     username: "",
     password: "",
   });
-  const updateUsername = (val) => {
-    setLoginFormValues({ ...loginFormValues, username: val });
+  const handleFormValueChange = (fieldType) => (e) => {
+    setLoginFormValues((prev) => ({
+      ...prev,
+      [fieldType]: e.target.value,
+    }));
   };
-  const updatePassword = (val) => {
-    setLoginFormValues({ ...loginFormValues, password: val });
+  const handleFormSubmit = () => {
+    console.log(loginFormValues);
+    setLoginFormValues({
+      username: "",
+      password: "",
+    });
   };
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-brand-primary-200">
@@ -25,15 +32,15 @@ const Login = () => {
           <FormSwitchButtons />
           <CredentialInput
             credentialType="username"
-            updateUsername={updateUsername}
-            updatePassword={updatePassword}
+            formValues={loginFormValues}
+            handleFormValueChange={handleFormValueChange("username")}
           />
           <CredentialInput
             credentialType="password"
-            updateUsername={updateUsername}
-            updatePassword={updatePassword}
+            formValues={loginFormValues}
+            handleFormValueChange={handleFormValueChange("password")}
           />
-          <SubmitButton userInputValues={loginFormValues} />
+          <SubmitButton handleFormSubmit={handleFormSubmit} />
         </div>
       </div>
     </div>
