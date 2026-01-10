@@ -7,6 +7,7 @@ import useContainerStore from "../../../utils/store/ContainerStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
+import useUserInfoStore from "../../../utils/store/UserInfoStore";
 import { successToast } from "../../../utils/Toasts";
 
 const SingleFieldModal = () => {
@@ -25,6 +26,7 @@ const SingleFieldModal = () => {
   const currentParentPath = useParentPathStore(
     (state) => state.currentParentPath
   );
+  const userId = useUserInfoStore((state) => state.userId);
 
   const closeSingleFieldModal = useModalToggleStore(
     (state) => state.closeSingleFieldModal
@@ -41,6 +43,7 @@ const SingleFieldModal = () => {
           .get("/api/v1/container/create", {
             params: {
               containerName: inputData,
+              userId: userId,
             },
           })
           .then((res) => {

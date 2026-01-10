@@ -21,7 +21,7 @@ const useAuthInit = () => {
 
         if (isMounted) {
           updateUserInfo(response.data.payload);
-          authenticateUser(response.data.payload);
+          authenticateUser(response.data.payload.accessToken);
         }
       } catch (error) {
         if (isMounted) {

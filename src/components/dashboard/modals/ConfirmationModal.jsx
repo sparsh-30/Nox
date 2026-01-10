@@ -5,7 +5,9 @@ import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useContainerStore from "../../../utils/store/ContainerStore";
 import useObjectStore from "../../../utils/store/ObjectStore";
+import useUserInfoStore from "../../../utils/store/UserInfoStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
+import useAuthStore from "../../../utils/store/AuthStore";
 import { axiosInstance } from "../../../utils/AxiosConfig";
 import { successToast } from "../../../utils/Toasts";
 
@@ -38,8 +40,33 @@ const ConfirmationModal = () => {
   const setCurrentParentPath = useParentPathStore(
     (state) => state.setCurrentParentPath
   );
+  const userId = useUserInfoStore((state) => state.userId);
+  const removeUserInfo = useUserInfoStore((state) => state.removeUserInfo);
+  const logOutUser = useAuthStore((state) => state.logOutUser);
 
   const fieldTypes = {
+    logOutUser: {
+      confirmationLine: "Are you sure you want to log out?",
+      onSubmitAction: () => {
+        axiosInstance
+          .get("/auth/v1/logout", {
+            params: {
+              userId: userId,
+            },
+            withCredentials: true,
+          })
+          .then(() => {
+            setSelectedContainerId("");
+            setCurrentParentPath("/");
+            closeConfirmationModal();
+            clearMiscellaneousData();
+            removeUserInfo();
+            logOutUser();
+            successToast("User logged out successfully!!");
+          })
+          .catch((err) => console.log(err));
+      },
+    },
     emptyContainer: {
       confirmationLine: (
         <>
@@ -48,7 +75,7 @@ const ConfirmationModal = () => {
             {
               containers.filter(
                 (cont) => cont.containerId === selectedContainerId
-              )[0].containerName
+              )[0]?.containerName
             }
           </span>
           <span>? All data stored inside will be permanently deleted.</span>
@@ -78,7 +105,7 @@ const ConfirmationModal = () => {
             {
               containers.filter(
                 (cont) => cont.containerId === selectedContainerId
-              )[0].containerName
+              )[0]?.containerName
             }
           </span>
           <span>? All data stored inside will be permanently deleted.</span>

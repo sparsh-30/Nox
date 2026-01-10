@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import useAuthStore from "../../utils/store/AuthStore";
 import useUserInfoStore from "../../utils/store/UserInfoStore";
 import { axiosInstance } from "../../../../frontend/src/utils/AxiosConfig";
+import { successToast } from "../../utils/Toasts";
 
 const SubmitButton = ({ clearFormValues, formValues, formType }) => {
   const authenticateUser = useAuthStore((state) => state.authenticateUser);
@@ -21,6 +22,7 @@ const SubmitButton = ({ clearFormValues, formValues, formType }) => {
       .then((res) => {
         updateUserInfo(res.data.payload);
         authenticateUser(res.data.payload.accessToken);
+        successToast("User logged in successfull!!");
         navigate("/dashboard", { replace: true });
       })
       .catch((err) => console.log(err));
