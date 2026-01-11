@@ -19,6 +19,7 @@ public class Container {
     @Id
     private String containerId;
     private String containerName;
+    private String userId;
     @CreationTimestamp
     private LocalDateTime containerCreatedAt;
 }

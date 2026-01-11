@@ -9,6 +9,7 @@ import com.blobstore.nox.metadata_module.utils.EntitiesMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,14 @@ public class ContainerHelperService {
 
     private final ContainerRepository containerRepository;
     private final EntitiesMapper mapper;
+
+    public List<Container> getAll() {
+        return containerRepository.findAll();
+    }
+
+    public List<Container> getAllContainersByUserId(String userId) {
+        return containerRepository.findByUserId(userId);
+    }
 
     public Container getContainerFromContainerId(String containerId) {
         Optional<Container> container = containerRepository.findByContainerId(containerId);
@@ -44,8 +53,8 @@ public class ContainerHelperService {
         return saveContainer(container);
     }
 
-    public Container createNewContainer(String containerName) {
-        Container tempContainer = mapper.createContainerEntity(containerName, UUIDGenerator.generateUUIDString());
+    public Container createNewContainer(String userId, String containerName) {
+        Container tempContainer = mapper.createContainerEntity(userId, containerName, UUIDGenerator.generateUUIDString());
         return saveContainer(tempContainer);
     }
 

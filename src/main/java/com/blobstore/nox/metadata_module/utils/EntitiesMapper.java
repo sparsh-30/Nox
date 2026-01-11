@@ -36,10 +36,12 @@ public class EntitiesMapper {
 
     // Return Container entity from specified fields
     public Container createContainerEntity(
+            String userId,
             String containerName,
             String containerUUID
     ) {
         return Container.builder()
+                .userId(userId)
                 .containerId(containerUUID)
                 .containerName(containerName)
                 .build();
@@ -67,6 +69,7 @@ public class EntitiesMapper {
     // Map: Container -> Map
     public Map<String, Object> mapContainerToMap(Container container) {
         return Map.of(
+                "userId", container.getUserId(),
                 "containerId", container.getContainerId(),
                 "containerName", container.getContainerName(),
                 "containerCreatedAt", container.getContainerCreatedAt()
