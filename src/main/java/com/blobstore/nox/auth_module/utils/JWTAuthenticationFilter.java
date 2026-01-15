@@ -38,6 +38,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 boolean isTokenValid = jwtService.isAccessTokenValid(JwtHeaderToken);
                 if (isTokenValid) {
                     doFilter(request, response, filterChain);
+                } else {
+                    throw new CustomAppException("Auth token has expired", ResponseCode.AUTH_TOKEN_EXPIRED);
                 }
             } else {
                 throw new CustomAppException("No auth token received", ResponseCode.AUTH_TOKEN_NOT_VALID);
@@ -53,6 +55,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 "/auth/v1/login",
                 "/auth/v1/register",
                 "/auth/v1/refresh",
+                "/auth/v1/logout",
                 "/swagger-ui/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",

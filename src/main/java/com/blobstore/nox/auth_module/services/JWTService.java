@@ -104,9 +104,9 @@ public class JWTService {
     public void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
-                .path("/auth/v1/refresh")
+                .secure(false)
+                .sameSite("Lax")
+                .path("/auth/v1")
                 .maxAge(refreshTokenExpirationTime)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
@@ -115,9 +115,9 @@ public class JWTService {
     public void revokeRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("Strict")
-                .path("/auth/v1/refresh")
+                .secure(false)
+                .sameSite("Lax")
+                .path("/auth/v1")
                 .maxAge(0)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
