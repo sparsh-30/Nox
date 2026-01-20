@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MdCancelPresentation } from "react-icons/md";
 import { FaRegCheckSquare } from "react-icons/fa";
-import { axiosInstance } from "../../../../../frontend/src/utils/AxiosConfig";
+import { axiosInstance } from "../../../utils/AxiosConfig";
 import useObjectStore from "../../../utils/store/ObjectStore";
 import useContainerStore from "../../../utils/store/ContainerStore";
 import useParentPathStore from "../../../utils/store/ParentPathStore";
