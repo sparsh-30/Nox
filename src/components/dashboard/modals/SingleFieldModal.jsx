@@ -8,6 +8,7 @@ import useParentPathStore from "../../../utils/store/ParentPathStore";
 import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
 import useModalToggleStore from "../../../utils/store/ModalToggleStore";
 import useUserInfoStore from "../../../utils/store/UserInfoStore";
+import useLoadingStore from "../../../utils/store/LoadingStore";
 import { successToast } from "../../../utils/Toasts";
 
 const SingleFieldModal = () => {
@@ -18,19 +19,22 @@ const SingleFieldModal = () => {
   const addNewObject = useObjectStore((state) => state.addNewObject);
 
   const selectedContainerId = useSelectedContainerStore(
-    (state) => state.selectedContainerId
+    (state) => state.selectedContainerId,
   );
   const setSelectedContainerId = useSelectedContainerStore(
-    (state) => state.setSelectedContainerId
+    (state) => state.setSelectedContainerId,
   );
   const currentParentPath = useParentPathStore(
-    (state) => state.currentParentPath
+    (state) => state.currentParentPath,
   );
   const userId = useUserInfoStore((state) => state.userId);
 
   const closeSingleFieldModal = useModalToggleStore(
-    (state) => state.closeSingleFieldModal
+    (state) => state.closeSingleFieldModal,
   );
+
+  const startLoading = useLoadingStore((state) => state.startLoading);
+  const stopLoading = useLoadingStore((state) => state.stopLoading);
 
   const fieldTypes = {
     createContainer: {
@@ -47,6 +51,7 @@ const SingleFieldModal = () => {
             },
           })
           .then((res) => {
+            sleep(3000);
             addNewContainer(res.data.payload);
             setSelectedContainerId(res.data.payload.containerId);
             closeSingleFieldModal();
@@ -72,7 +77,7 @@ const SingleFieldModal = () => {
                 size: 0,
                 objectName: inputData,
               },
-            }
+            },
           )
           .then((res) => {
             addNewObject(res.data.payload);
@@ -82,6 +87,15 @@ const SingleFieldModal = () => {
           .catch((err) => console.log(err));
       },
     },
+  };
+
+  const handleSubmitButton = async () => {
+    startLoading();
+    try {
+      await fieldTypes[fieldType]?.onSubmitAction?.();
+    } finally {
+      stopLoading();
+    }
   };
 
   const handleInput = (e) => {
@@ -111,7 +125,8 @@ const SingleFieldModal = () => {
             </div>
           </div>
           <div
-            onClick={fieldTypes[fieldType]?.onSubmitAction}
+            // onClick={fieldTypes[fieldType]?.onSubmitAction}
+            onClick={handleSubmitButton}
             className={`w-1/2 py-2 px-3 font-semibold ${
               inputData.length === 0
                 ? "bg-brand-primary-600/50 cursor-not-allowed"
