@@ -16,7 +16,7 @@ const SubmitButton = ({ clearFormValues, formValues, formType }) => {
     startLoading();
     axiosInstance
       .post(
-        `/auth/v1/${formType}`,
+        `/api/v1/${formType}`,
         {
           username: formValues.username,
           password: formValues.password,
