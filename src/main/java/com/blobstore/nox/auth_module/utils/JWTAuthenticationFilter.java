@@ -56,6 +56,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 "/auth/v1/register",
                 "/auth/v1/refresh",
                 "/auth/v1/logout",
+                "/api/v1/upload/**",
+                "/api/v1/download/**",
                 "/swagger-ui/**",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
