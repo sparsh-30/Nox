@@ -2,6 +2,7 @@ package com.blobstore.nox.content_module.services;
 
 import com.blobstore.nox.common.UUIDGenerator;
 import com.blobstore.nox.files_module.services.FileOperationsService;
+import com.blobstore.nox.metadata_module.models.BlobObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +16,6 @@ import java.util.Map;
 public class MainUploadService {
 
     private final FileOperationsService fileOperationsService;
-
     private final UploadHelperService uploadHelperService;
 
     public Map<String, Object> startUploadSession() {
@@ -32,15 +32,15 @@ public class MainUploadService {
         uploadHelperService.incrementChunkNumberInCache(sessionId);
     }
 
-    public void mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks) {
+    public BlobObject mergeAllChunksIntoFinalFile(String sessionId, Integer totalChunks, String objectName, Long size, String parentPath, String parentContainerId) {
         uploadHelperService.validateSessionId(sessionId);
 
-        // Obtain the objectId
-        String objectId = "testId";
-
+        String objectId = UUIDGenerator.generateUUIDString();
         Path targetFilePath = fileOperationsService.generateFilePathFromObjectId(objectId);
         fileOperationsService.mergeChunksToFinalFile(targetFilePath, sessionId, totalChunks);
+        BlobObject savedObject = uploadHelperService.saveNewObject(objectId, objectName, size, parentPath, parentContainerId);
         uploadHelperService.deleteSessionIdFromCache(sessionId);
+        return savedObject;
     }
 
     public void mergeAllChunksToAnExistingFile(String objectId, String sessionId, Integer totalChunks) {

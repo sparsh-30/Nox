@@ -41,12 +41,16 @@ public class UploadController {
     @PutMapping("/merge")
     public ResponseEntity<?> mergeChunks(
             @RequestParam String sessionId,
-            @RequestParam Integer totalChunks
+            @RequestParam Integer totalChunks,
+            @RequestParam String objectName,
+            @RequestParam Long size,
+            @RequestParam String parentPath,
+            @RequestParam String parentContainerId
     ) {
-        mainUploadService.mergeAllChunksIntoFinalFile(sessionId, totalChunks);
+        Object res = mainUploadService.mergeAllChunksIntoFinalFile(sessionId, totalChunks, objectName, size, parentPath, parentContainerId);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS.getStatus())
-                .body(new ApiResponse(true, ResponseCode.SUCCESS, "File has been merged and saved successfully", null));
+                .body(new ApiResponse(true, ResponseCode.SUCCESS, "File has been merged and saved successfully", res));
     }
 
     @PutMapping("/update")
