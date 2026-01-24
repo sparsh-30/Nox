@@ -1,0 +1,39 @@
+import React from "react";
+import { LuContainer } from "react-icons/lu";
+import useSelectedContainerStore from "../../../utils/store/SelectedContainerStore";
+import useParentPathStore from "../../../utils/store/ParentPathStore";
+
+const ContainerEntry = ({ containerId, containerName, isSelected }) => {
+  const selectedContainerId = useSelectedContainerStore(
+    (state) => state.selectedContainerId
+  );
+  const setSelectedContainerId = useSelectedContainerStore(
+    (state) => state.setSelectedContainerId
+  );
+  const setCurrentParentPath = useParentPathStore(
+    (state) => state.setCurrentParentPath
+  );
+
+  const handleContainerClick = () => {
+    setCurrentParentPath("/");
+    if (selectedContainerId === containerId) setSelectedContainerId("");
+    else setSelectedContainerId(containerId);
+  };
+
+  return (
+    <div
+      onClick={handleContainerClick}
+      className={`w-full flex items-center gap-4 text-lg px-5 my-1 py-2 rounded-md 
+        ${
+          isSelected
+            ? "bg-primary-bg text-brand-primary-600"
+            : "hover:bg-brand-primary-400 hover:text-primary-bg"
+        }  cursor-pointer transition duration-100 ease-in-out hover:scale-105`}
+    >
+      <LuContainer />
+      <div>{containerName}</div>
+    </div>
+  );
+};
+
+export default ContainerEntry;
